@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KFDtool.P25.Kmm
 {
@@ -54,20 +51,33 @@ namespace KFDtool.P25.Kmm
 
         public override void Parse(byte[] contents)
         {
-            if (contents.Length != 4)
+            // we have to handle both the p25 standard (4 bytes) as well as the motorola variant used in LLA and DLI (2 bytes)
+            // motorola uses the standard mfid for their non-standard implementation, so we have to use the length to determine how to parse
+
+            if (contents.Length == 2) // motorola variant
             {
-                throw new ArgumentOutOfRangeException("contents", string.Format("length mismatch - expected 4, got {0} - {1}", contents.Length.ToString(), BitConverter.ToString(contents)));
+                /* acknowledged message id */
+                AcknowledgedMessageId = (MessageId)contents[0];
+
+                /* status */
+                Status = (OperationStatus)contents[1];
             }
+            else if (contents.Length == 4) // p25 standard
+            {
+                /* acknowledged message id */
+                AcknowledgedMessageId = (MessageId)contents[0];
 
-            /* acknowledged message id */
-            AcknowledgedMessageId = (MessageId)contents[0];
+                /* message number */
+                MessageNumber |= contents[1] << 8;
+                MessageNumber |= contents[2];
 
-            /* message number */
-            MessageNumber |= contents[1] << 8;
-            MessageNumber |= contents[2];
-
-            /* status */
-            Status = (OperationStatus)contents[3];
+                /* status */
+                Status = (OperationStatus)contents[3];
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("contents", string.Format("length mismatch - expected 2 or 4, got {0} - {1}", contents.Length.ToString(), BitConverter.ToString(contents)));
+            }
         }
     }
 }

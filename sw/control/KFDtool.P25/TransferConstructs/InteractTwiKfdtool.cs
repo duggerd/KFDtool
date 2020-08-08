@@ -1,11 +1,9 @@
 ﻿using KFDtool.Adapter.Protocol.Adapter;
 using KFDtool.P25.ManualRekey;
-using KFDtool.P25.ThreeWire;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KFDtool.P25.TransferConstructs
 {
@@ -13,11 +11,11 @@ namespace KFDtool.P25.TransferConstructs
     {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static string ReadAdapterProtocolVersion(BaseDevice device)
+        public static string ReadAdapterProtocolVersion(TwiKfdtoolDevice device)
         {
             string version = string.Empty;
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -26,7 +24,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -49,7 +47,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -58,11 +56,11 @@ namespace KFDtool.P25.TransferConstructs
             return version;
         }
 
-        public static string ReadFirmwareVersion(BaseDevice device)
+        public static string ReadFirmwareVersion(TwiKfdtoolDevice device)
         {
             string version = string.Empty;
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -71,7 +69,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -94,7 +92,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -103,11 +101,11 @@ namespace KFDtool.P25.TransferConstructs
             return version;
         }
 
-        public static string ReadUniqueId(BaseDevice device)
+        public static string ReadUniqueId(TwiKfdtoolDevice device)
         {
             string uniqueId = string.Empty;
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -116,7 +114,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -147,7 +145,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -156,11 +154,11 @@ namespace KFDtool.P25.TransferConstructs
             return uniqueId;
         }
 
-        public static string ReadModel(BaseDevice device)
+        public static string ReadModel(TwiKfdtoolDevice device)
         {
             string model = string.Empty;
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -169,7 +167,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -203,7 +201,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -212,11 +210,11 @@ namespace KFDtool.P25.TransferConstructs
             return model;
         }
 
-        public static string ReadHardwareRevision(BaseDevice device)
+        public static string ReadHardwareRevision(TwiKfdtoolDevice device)
         {
             string version = string.Empty;
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -225,7 +223,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -255,7 +253,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -264,11 +262,11 @@ namespace KFDtool.P25.TransferConstructs
             return version;
         }
 
-        public static string ReadSerialNumber(BaseDevice device)
+        public static string ReadSerialNumber(TwiKfdtoolDevice device)
         {
             string serialNumber = string.Empty;
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -277,7 +275,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -307,7 +305,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -316,9 +314,9 @@ namespace KFDtool.P25.TransferConstructs
             return serialNumber;
         }
 
-        public static void EnterBslMode(BaseDevice device)
+        public static void EnterBslMode(TwiKfdtoolDevice device)
         {
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -327,7 +325,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -348,18 +346,18 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
             }
         }
 
-        public static string SelfTest(BaseDevice device)
+        public static string SelfTest(TwiKfdtoolDevice device)
         {
             string result = string.Empty;
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -368,7 +366,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -418,7 +416,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -427,9 +425,9 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static void CheckTargetMrConnection(BaseDevice device)
+        public static void CheckTargetMrConnection(TwiKfdtoolDevice device)
         {
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -438,15 +436,15 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
                 ap.Clear();
 
-                ThreeWireProtocol twp = new ThreeWireProtocol(ap);
+                ManualRekeyApplication mra = new ManualRekeyApplication(ap);
 
-                twp.CheckTargetMrConnection();
+                mra.CheckTargetMrConnection();
             }
             catch (Exception)
             {
@@ -461,16 +459,16 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
             }
         }
 
-        public static void Keyload(BaseDevice device, List<CmdKeyItem> keys)
+        public static void Keyload(TwiKfdtoolDevice device, List<CmdKeyItem> keys)
         {
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -479,7 +477,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -502,16 +500,16 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
             }
         }
 
-        public static void EraseKey(BaseDevice device, List<CmdKeyItem> keys)
+        public static void EraseKey(TwiKfdtoolDevice device, List<CmdKeyItem> keys)
         {
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -520,7 +518,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -543,16 +541,16 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
             }
         }
 
-        public static void EraseAllKeys(BaseDevice device)
+        public static void EraseAllKeys(TwiKfdtoolDevice device)
         {
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -561,7 +559,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -584,18 +582,18 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
             }
         }
 
-        public static List<RspKeyInfo> ViewKeyInfo(BaseDevice device)
+        public static List<RspKeyInfo> ViewKeyInfo(TwiKfdtoolDevice device)
         {
             List<RspKeyInfo> result = new List<RspKeyInfo>();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -604,7 +602,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -627,7 +625,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -636,11 +634,11 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static RspRsiInfo LoadConfig(BaseDevice device, int kmfRsi, int mnp)
+        public static RspRsiInfo LoadConfig(TwiKfdtoolDevice device, int kmfRsi, int mnp)
         {
             RspRsiInfo result = new RspRsiInfo();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -649,7 +647,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -672,7 +670,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -681,11 +679,11 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static RspRsiInfo ChangeRsi(BaseDevice device, int rsiOld, int rsiNew, int mnp)
+        public static RspRsiInfo ChangeRsi(TwiKfdtoolDevice device, int rsiOld, int rsiNew, int mnp)
         {
             RspRsiInfo result = new RspRsiInfo();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -694,7 +692,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -717,7 +715,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -726,11 +724,11 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static List<RspRsiInfo> ViewRsiItems(BaseDevice device)
+        public static List<RspRsiInfo> ViewRsiItems(TwiKfdtoolDevice device)
         {
             List<RspRsiInfo> result = new List<RspRsiInfo>();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -739,7 +737,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -762,7 +760,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -771,11 +769,11 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static int ViewMnp(BaseDevice device)
+        public static int ViewMnp(TwiKfdtoolDevice device)
         {
             int result = new int();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -784,7 +782,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -807,7 +805,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -816,11 +814,11 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static int ViewKmfRsi(BaseDevice device)
+        public static int ViewKmfRsi(TwiKfdtoolDevice device)
         {
             int result = new int();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -829,7 +827,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -852,7 +850,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -861,11 +859,11 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static List<RspKeysetInfo> ViewKeysetTaggingInfo(BaseDevice device)
+        public static List<RspKeysetInfo> ViewKeysetTaggingInfo(TwiKfdtoolDevice device)
         {
             List<RspKeysetInfo> result = new List<RspKeysetInfo>();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -874,7 +872,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -897,7 +895,7 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
@@ -906,11 +904,11 @@ namespace KFDtool.P25.TransferConstructs
             return result;
         }
 
-        public static RspChangeoverInfo ActivateKeyset(BaseDevice device, int keysetSuperseded, int keysetActivated)
+        public static RspChangeoverInfo ActivateKeyset(TwiKfdtoolDevice device, int keysetSuperseded, int keysetActivated)
         {
             RspChangeoverInfo result = new RspChangeoverInfo();
 
-            if (device.TwiKfdtoolDevice.ComPort == string.Empty)
+            if (device.ComPort == string.Empty)
             {
                 throw new ArgumentException("No device selected");
             }
@@ -919,7 +917,7 @@ namespace KFDtool.P25.TransferConstructs
 
             try
             {
-                ap = new AdapterProtocol(device.TwiKfdtoolDevice.ComPort);
+                ap = new AdapterProtocol(device.ComPort);
 
                 ap.Open();
 
@@ -943,13 +941,95 @@ namespace KFDtool.P25.TransferConstructs
                         ap.Close();
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (IOException ex)
                 {
                     Logger.Warn("could not close serial port: {0}", ex.Message);
                 }
             }
 
             return result;
+        }
+
+        public static void LoadAuthenticationKey(TwiKfdtoolDevice device, bool targetSpecificSuId, int wacnId, int systemId, int unitId, byte[] key)
+        {
+            if (device.ComPort == string.Empty)
+            {
+                throw new ArgumentException("No device selected");
+            }
+
+            AdapterProtocol ap = null;
+
+            try
+            {
+                ap = new AdapterProtocol(device.ComPort);
+
+                ap.Open();
+
+                ap.Clear();
+
+                ManualRekeyApplication mra = new ManualRekeyApplication(ap);
+
+                mra.LoadAuthenticationKey(targetSpecificSuId, wacnId, systemId, unitId, key);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    if (ap != null)
+                    {
+                        ap.Close();
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Logger.Warn("could not close serial port: {0}", ex.Message);
+                }
+            }
+        }
+
+        public static void DeleteAuthenticationKey(TwiKfdtoolDevice device, bool targetSpecificSuId, bool deleteAllKeys, int wacnId, int systemId, int unitId)
+        {
+            if (device.ComPort == string.Empty)
+            {
+                throw new ArgumentException("No device selected");
+            }
+
+            AdapterProtocol ap = null;
+
+            try
+            {
+                ap = new AdapterProtocol(device.ComPort);
+
+                ap.Open();
+
+                ap.Clear();
+
+                ManualRekeyApplication mra = new ManualRekeyApplication(ap);
+
+                mra.DeleteAuthenticationKey(targetSpecificSuId, deleteAllKeys, wacnId, systemId, unitId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    if (ap != null)
+                    {
+                        ap.Close();
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Logger.Warn("could not close serial port: {0}", ex.Message);
+                }
+            }
         }
     }
 }

@@ -1,17 +1,6 @@
 ﻿using KFDtool.P25.TransferConstructs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace KFDtool.Gui.Dialog
 {
@@ -26,7 +15,7 @@ namespace KFDtool.Gui.Dialog
 
             // protocol
 
-            if (Settings.SelectedDevice.DliIpDevice.Protocol == DliIpDevice.ProtocolOptions.UDP)
+            if (Settings.SelectedDevice.DliIpDevice.ProtocolType == DliIpDevice.ProtocolOptions.UDP)
             {
                 PcbProtocol.SelectedItem = PcbiProtocolUdp;
             }
@@ -43,15 +32,19 @@ namespace KFDtool.Gui.Dialog
 
             TbPort.Text = Settings.SelectedDevice.DliIpDevice.Port.ToString();
 
-            // variant
+            // session control
 
-            if (Settings.SelectedDevice.DliIpDevice.Variant == DliIpDevice.VariantOptions.Standard)
+            if (Settings.SelectedDevice.DliIpDevice.SessionControlType == SessionControlOptions.None)
             {
-                PcbVariant.SelectedItem = PcbiVariantStandard;
+                CbSessionControl.SelectedItem = CbiSessionControlNone;
             }
-            else if (Settings.SelectedDevice.DliIpDevice.Variant == DliIpDevice.VariantOptions.Motorola)
+            else if (Settings.SelectedDevice.DliIpDevice.SessionControlType == SessionControlOptions.Standard)
             {
-                PcbVariant.SelectedItem = PcbiVariantMotorola;
+                CbSessionControl.SelectedItem = CbiSessionControlStandard;
+            }
+            else if (Settings.SelectedDevice.DliIpDevice.SessionControlType == SessionControlOptions.Motorola)
+            {
+                CbSessionControl.SelectedItem = CbiSessionControlMotorola;
             }
             else
             {
@@ -65,7 +58,7 @@ namespace KFDtool.Gui.Dialog
 
             if (PcbProtocol.SelectedItem == PcbiProtocolUdp)
             {
-                Settings.SelectedDevice.DliIpDevice.Protocol = DliIpDevice.ProtocolOptions.UDP;
+                Settings.SelectedDevice.DliIpDevice.ProtocolType = DliIpDevice.ProtocolOptions.UDP;
             }
             else
             {
@@ -98,27 +91,31 @@ namespace KFDtool.Gui.Dialog
                 return;
             }
 
-            // variant
+            // session control
 
-            if (PcbVariant.SelectedItem == PcbiVariantStandard)
+            if (CbSessionControl.SelectedItem == CbiSessionControlNone)
             {
-                Settings.SelectedDevice.DliIpDevice.Variant = DliIpDevice.VariantOptions.Standard;
+                Settings.SelectedDevice.DliIpDevice.SessionControlType = SessionControlOptions.None;
             }
-            else if (PcbVariant.SelectedItem == PcbiVariantMotorola)
+            else if (CbSessionControl.SelectedItem == CbiSessionControlStandard)
             {
-                Settings.SelectedDevice.DliIpDevice.Variant = DliIpDevice.VariantOptions.Motorola;
+                Settings.SelectedDevice.DliIpDevice.SessionControlType = SessionControlOptions.Standard;
+            }
+            else if (CbSessionControl.SelectedItem == CbiSessionControlMotorola)
+            {
+                Settings.SelectedDevice.DliIpDevice.SessionControlType = SessionControlOptions.Motorola;
             }
             else
             {
-                throw new Exception("unknown PcbVariant selection");
+                throw new Exception("unknown CbSessionControl selection");
             }
 
-            this.Close();
+            Close();
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

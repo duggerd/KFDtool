@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constant\AlgorithmId.cs" />
+    <Compile Include="Kmm\AlgorithmId.cs" />
     <Compile Include="DataLinkIndependent\DataLinkIndependentProtocol.cs" />
     <Compile Include="DeviceProtocol\IDeviceProtocol.cs" />
     <Compile Include="Generator\KeyGenerator.cs" />
@@ -60,13 +60,21 @@
     <Compile Include="Kmm\ChangeoverResponse.cs" />
     <Compile Include="Kmm\ChangeRsiCommand.cs" />
     <Compile Include="Kmm\ChangeRsiResponse.cs" />
+    <Compile Include="Kmm\DeleteAuthenticationKeyCommand.cs" />
+    <Compile Include="Kmm\DeleteAuthenticationKeyResponse.cs" />
+    <Compile Include="Kmm\InventoryCommandListActiveSuId.cs" />
     <Compile Include="Kmm\InventoryCommandListKeysetTaggingInfo.cs" />
     <Compile Include="Kmm\InventoryCommandListKmfRsi.cs" />
     <Compile Include="Kmm\InventoryCommandListMnp.cs" />
+    <Compile Include="Kmm\InventoryCommandListSuIdItems.cs" />
+    <Compile Include="Kmm\InventoryResponseListActiveSuId.cs" />
     <Compile Include="Kmm\InventoryResponseListKeysetTaggingInfo.cs" />
     <Compile Include="Kmm\InventoryResponseListKmfRsi.cs" />
     <Compile Include="Kmm\InventoryResponseListMnp.cs" />
+    <Compile Include="Kmm\InventoryResponseListSuIdItems.cs" />
     <Compile Include="Kmm\KeysetItem.cs" />
+    <Compile Include="Kmm\LoadAuthenticationKeyCommand.cs" />
+    <Compile Include="Kmm\LoadAuthenticationKeyResponse.cs" />
     <Compile Include="Kmm\LoadConfigCommand.cs" />
     <Compile Include="Kmm\LoadConfigResponse.cs" />
     <Compile Include="Kmm\Mfid90SessionControlVer1.cs" />
@@ -76,6 +84,8 @@
     <Compile Include="Kmm\NegativeAcknowledgment.cs" />
     <Compile Include="Kmm\RsiItem.cs" />
     <Compile Include="Kmm\SessionControl.cs" />
+    <Compile Include="Kmm\SuId.cs" />
+    <Compile Include="Kmm\SuIdStatus.cs" />
     <Compile Include="NetworkProtocol\UdpProtocol.cs" />
     <Compile Include="Partition\KeyPartitioner.cs" />
     <Compile Include="TransferConstructs\CmdKeyItem.cs" />
@@ -87,6 +97,7 @@
     <Compile Include="TransferConstructs\RspKeyInfo.cs" />
     <Compile Include="TransferConstructs\RspKeysetInfo.cs" />
     <Compile Include="TransferConstructs\RspRsiInfo.cs" />
+    <Compile Include="TransferConstructs\SessionControlOptions.cs" />
     <Compile Include="TransferConstructs\TwiKfdtoolDevice.cs" />
     <Compile Include="Validator\FieldValidator.cs" />
     <Compile Include="Kmm\InventoryCommandListActiveKeys.cs" />

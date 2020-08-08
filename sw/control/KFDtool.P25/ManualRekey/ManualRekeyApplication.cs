@@ -6,9 +6,11 @@ using KFDtool.P25.NetworkProtocol;
 using KFDtool.P25.Partition;
 using KFDtool.P25.ThreeWire;
 using KFDtool.P25.TransferConstructs;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +18,7 @@ namespace KFDtool.P25.ManualRekey
 {
     public class ManualRekeyApplication
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static Logger Log = LogManager.GetCurrentClassLogger();
 
         private bool WithPreamble { get; set; }
 
@@ -31,11 +33,20 @@ namespace KFDtool.P25.ManualRekey
             Mfid = 0x00;
         }
 
-        public ManualRekeyApplication(UdpProtocol udpProtocol, bool motVariant)
+        public ManualRekeyApplication(UdpProtocol udpProtocol, SessionControlOptions sessionControlType)
         {
-            DeviceProtocol = new DataLinkIndependentProtocol(udpProtocol, motVariant);
+            DeviceProtocol = new DataLinkIndependentProtocol(udpProtocol, sessionControlType);
+
             WithPreamble = true;
-            Mfid = motVariant ? (byte)0x90 : (byte)0x00;
+
+            if (sessionControlType == SessionControlOptions.Motorola)
+            {
+                Mfid = 0x90;
+            }
+            else
+            {
+                Mfid = 0x00;
+            }
         }
 
         private void Begin()
@@ -63,6 +74,11 @@ namespace KFDtool.P25.ManualRekey
             DeviceProtocol.EndSession();
         }
 
+        public void CheckTargetMrConnection()
+        {
+            DeviceProtocol.CheckTargetMrConnection();
+        }
+
         public void Keyload(List<CmdKeyItem> keyItems)
         {
             List<List<CmdKeyItem>> keyGroups = KeyPartitioner.PartitionKeys(keyItems);
@@ -81,12 +97,12 @@ namespace KFDtool.P25.ManualRekey
                 {
                     InventoryResponseListActiveKsetIds kmm = rspKmmBody1 as InventoryResponseListActiveKsetIds;
 
-                    Logger.Debug("number of active keyset ids: {0}", kmm.KsetIds.Count);
+                    Log.Debug("number of active keyset ids: {0}", kmm.KsetIds.Count);
 
                     for (int i = 0; i < kmm.KsetIds.Count; i++)
                     {
-                        Logger.Debug("* keyset id index {0} *", i);
-                        Logger.Debug("keyset id: {0} (dec), {0:X} (hex)", kmm.KsetIds[i]);
+                        Log.Debug("* keyset id index {0} *", i);
+                        Log.Debug("keyset id: {0} (dec), {0:X} (hex)", kmm.KsetIds[i]);
                     }
 
                     // TODO support more than one crypto group
@@ -105,7 +121,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -134,7 +150,7 @@ namespace KFDtool.P25.ManualRekey
 
                     foreach (CmdKeyItem key in keyGroup)
                     {
-                        Logger.Debug(key.ToString());
+                        Log.Debug(key.ToString());
 
                         KeyItem keyItem = new KeyItem();
                         keyItem.SLN = key.Sln;
@@ -152,16 +168,16 @@ namespace KFDtool.P25.ManualRekey
                     {
                         RekeyAcknowledgment kmm = rspKmmBody2 as RekeyAcknowledgment;
 
-                        Logger.Debug("number of key status: {0}", kmm.Keys.Count);
+                        Log.Debug("number of key status: {0}", kmm.Keys.Count);
 
                         for (int i = 0; i < kmm.Keys.Count; i++)
                         {
                             KeyStatus status = kmm.Keys[i];
 
-                            Logger.Debug("* key status index {0} *", i);
-                            Logger.Debug("algorithm id: {0} (dec), {0:X} (hex)", status.AlgorithmId);
-                            Logger.Debug("key id: {0} (dec), {0:X} (hex)", status.KeyId);
-                            Logger.Debug("status: {0} (dec), {0:X} (hex)", status.Status);
+                            Log.Debug("* key status index {0} *", i);
+                            Log.Debug("algorithm id: {0} (dec), {0:X} (hex)", status.AlgorithmId);
+                            Log.Debug("key id: {0} (dec), {0:X} (hex)", status.KeyId);
+                            Log.Debug("status: {0} (dec), {0:X} (hex)", status.Status);
 
                             if (status.Status != 0)
                             {
@@ -187,7 +203,7 @@ namespace KFDtool.P25.ManualRekey
 
                         string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                         string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                     }
                     else
                     {
@@ -223,12 +239,12 @@ namespace KFDtool.P25.ManualRekey
                 {
                     InventoryResponseListActiveKsetIds kmm = rspKmmBody1 as InventoryResponseListActiveKsetIds;
 
-                    Logger.Debug("number of active keyset ids: {0}", kmm.KsetIds.Count);
+                    Log.Debug("number of active keyset ids: {0}", kmm.KsetIds.Count);
 
                     for (int i = 0; i < kmm.KsetIds.Count; i++)
                     {
-                        Logger.Debug("* keyset id index {0} *", i);
-                        Logger.Debug("keyset id: {0} (dec), {0:X} (hex)", kmm.KsetIds[i]);
+                        Log.Debug("* keyset id index {0} *", i);
+                        Log.Debug("keyset id: {0} (dec), {0:X} (hex)", kmm.KsetIds[i]);
                     }
 
                     // TODO support more than one crypto group
@@ -247,7 +263,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -276,7 +292,7 @@ namespace KFDtool.P25.ManualRekey
 
                     foreach (CmdKeyItem key in keyGroup)
                     {
-                        Logger.Debug(key.ToString());
+                        Log.Debug(key.ToString());
 
                         KeyItem keyItem = new KeyItem();
                         keyItem.SLN = key.Sln;
@@ -294,16 +310,16 @@ namespace KFDtool.P25.ManualRekey
                     {
                         RekeyAcknowledgment kmm = rspKmmBody2 as RekeyAcknowledgment;
 
-                        Logger.Debug("number of key status: {0}", kmm.Keys.Count);
+                        Log.Debug("number of key status: {0}", kmm.Keys.Count);
 
                         for (int i = 0; i < kmm.Keys.Count; i++)
                         {
                             KeyStatus status = kmm.Keys[i];
 
-                            Logger.Debug("* key status index {0} *", i);
-                            Logger.Debug("algorithm id: {0} (dec), {0:X} (hex)", status.AlgorithmId);
-                            Logger.Debug("key id: {0} (dec), {0:X} (hex)", status.KeyId);
-                            Logger.Debug("status: {0} (dec), {0:X} (hex)", status.Status);
+                            Log.Debug("* key status index {0} *", i);
+                            Log.Debug("algorithm id: {0} (dec), {0:X} (hex)", status.AlgorithmId);
+                            Log.Debug("key id: {0} (dec), {0:X} (hex)", status.KeyId);
+                            Log.Debug("status: {0} (dec), {0:X} (hex)", status.Status);
 
                             if (status.Status != 0)
                             {
@@ -329,7 +345,7 @@ namespace KFDtool.P25.ManualRekey
 
                         string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                         string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                     }
                     else
                     {
@@ -359,7 +375,7 @@ namespace KFDtool.P25.ManualRekey
 
                 if (responseKmmBody is ZeroizeResponse)
                 {
-                    Logger.Debug("zerozied");
+                    Log.Debug("zerozied");
                 }
                 else if (responseKmmBody is NegativeAcknowledgment)
                 {
@@ -367,7 +383,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -409,24 +425,24 @@ namespace KFDtool.P25.ManualRekey
 
                         marker = kmm.InventoryMarker;
 
-                        Logger.Debug("inventory marker: {0}", marker);
+                        Log.Debug("inventory marker: {0}", marker);
 
                         if (marker == 0)
                         {
                             more = false;
                         }
 
-                        Logger.Debug("number of keys returned: {0}", kmm.Keys.Count);
+                        Log.Debug("number of keys returned: {0}", kmm.Keys.Count);
 
                         for (int i = 0; i < kmm.Keys.Count; i++)
                         {
                             KeyInfo info = kmm.Keys[i];
 
-                            Logger.Debug("* key index {0} *", i);
-                            Logger.Debug("keyset id: {0} (dec), {0:X} (hex)", info.KeySetId);
-                            Logger.Debug("sln: {0} (dec), {0:X} (hex)", info.SLN);
-                            Logger.Debug("algorithm id: {0} (dec), {0:X} (hex)", info.AlgorithmId);
-                            Logger.Debug("key id: {0} (dec), {0:X} (hex)", info.KeyId);
+                            Log.Debug("* key index {0} *", i);
+                            Log.Debug("keyset id: {0} (dec), {0:X} (hex)", info.KeySetId);
+                            Log.Debug("sln: {0} (dec), {0:X} (hex)", info.SLN);
+                            Log.Debug("algorithm id: {0} (dec), {0:X} (hex)", info.AlgorithmId);
+                            Log.Debug("key id: {0} (dec), {0:X} (hex)", info.KeyId);
 
                             RspKeyInfo res = new RspKeyInfo();
 
@@ -444,7 +460,7 @@ namespace KFDtool.P25.ManualRekey
 
                         string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                         string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                     }
                     else
                     {
@@ -478,7 +494,7 @@ namespace KFDtool.P25.ManualRekey
 
                 if (responseKmmBody is InventoryResponseListKmfRsi)
                 {
-                    Logger.Debug("MNP response");
+                    Log.Debug("MNP response");
 
                     InventoryResponseListKmfRsi kmm = responseKmmBody as InventoryResponseListKmfRsi;
 
@@ -490,7 +506,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -523,7 +539,7 @@ namespace KFDtool.P25.ManualRekey
 
                 if (responseKmmBody is InventoryResponseListMnp)
                 {
-                    Logger.Debug("MNP response");
+                    Log.Debug("MNP response");
 
                     InventoryResponseListMnp kmm = responseKmmBody as InventoryResponseListMnp;
 
@@ -535,7 +551,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -579,7 +595,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -626,7 +642,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -666,22 +682,22 @@ namespace KFDtool.P25.ManualRekey
                     {
                         InventoryResponseListRsiItems kmm = responseKmmBody as InventoryResponseListRsiItems;
 
-                        Logger.Debug("inventory marker: {0}", marker);
+                        Log.Debug("inventory marker: {0}", marker);
 
                         if (marker == 0)
                         {
                             more = false;
                         }
 
-                        Logger.Debug("number of RSIs returned: {0}", kmm.RsiItems.Count);
+                        Log.Debug("number of RSIs returned: {0}", kmm.RsiItems.Count);
 
                         for (int i = 0; i < kmm.RsiItems.Count; i++)
                         {
                             RsiItem item = kmm.RsiItems[i];
 
-                            Logger.Debug("* rsi index {0} *", i);
-                            Logger.Debug("rsi id: {0} (dec), {0:X} (hex)", item.RSI);
-                            Logger.Debug("mn: {0} (dec), {0:X} (hex)", item.MessageNumber);
+                            Log.Debug("* rsi index {0} *", i);
+                            Log.Debug("rsi id: {0} (dec), {0:X} (hex)", item.RSI);
+                            Log.Debug("mn: {0} (dec), {0:X} (hex)", item.MessageNumber);
 
                             RspRsiInfo res = new RspRsiInfo();
 
@@ -697,7 +713,7 @@ namespace KFDtool.P25.ManualRekey
 
                         string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                         string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                     }
                     else
                     {
@@ -731,7 +747,7 @@ namespace KFDtool.P25.ManualRekey
 
                 if (responseKmmBody is InventoryResponseListKeysetTaggingInfo)
                 {
-                    Logger.Debug("KeysetTaggingInfo response");
+                    Log.Debug("KeysetTaggingInfo response");
 
                     InventoryResponseListKeysetTaggingInfo kmm = responseKmmBody as InventoryResponseListKeysetTaggingInfo;
 
@@ -756,7 +772,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -801,7 +817,7 @@ namespace KFDtool.P25.ManualRekey
 
                     string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
                     string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
-                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, kmm.Status, statusReason));
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
                 }
                 else
                 {
@@ -820,19 +836,136 @@ namespace KFDtool.P25.ManualRekey
             return result;
         }
 
-        public void LoadAuthenticationKey()
+        public void LoadAuthenticationKey(bool targetSpecificSuId, int wacnId, int systemId, int unitId, byte[] key)
         {
-            throw new NotImplementedException();
+            Begin();
+
+            try
+            {
+                SuId commandSuId = new SuId(wacnId, systemId, unitId);
+
+                LoadAuthenticationKeyCommand cmdKmmBody = new LoadAuthenticationKeyCommand(targetSpecificSuId, commandSuId, key);
+
+                KmmBody rspKmmBody = TxRxKmm(cmdKmmBody);
+
+                if (rspKmmBody is LoadAuthenticationKeyResponse)
+                {
+                    LoadAuthenticationKeyResponse kmm = rspKmmBody as LoadAuthenticationKeyResponse;
+
+                    if (kmm.AssignmentSuccess != true || kmm.Status != OperationStatus.CommandWasPerformed)
+                    {
+                        throw new Exception(string.Format("abnormal response - assignment success: {0}, status: {1} (0x{2:X2})", kmm.AssignmentSuccess, kmm.Status.ToString(), (byte)kmm.Status));
+                    }
+                }
+                else if (rspKmmBody is NegativeAcknowledgment)
+                {
+                    NegativeAcknowledgment kmm = rspKmmBody as NegativeAcknowledgment;
+
+                    string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                    string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
+                }
+                else
+                {
+                    throw new Exception("unexpected kmm");
+                }
+            }
+            catch
+            {
+                End();
+
+                throw;
+            }
+
+            End();
         }
 
-        public void DeleteAuthenticationKey()
+        public void DeleteAuthenticationKey(bool targetSpecificSuId, bool deleteAllKeys, int wacnId, int systemId, int unitId)
         {
-            throw new NotImplementedException();
+            Begin();
+
+            try
+            {
+                SuId commandSuId = new SuId(wacnId, systemId, unitId);
+
+                DeleteAuthenticationKeyCommand cmdKmmBody = new DeleteAuthenticationKeyCommand(targetSpecificSuId, deleteAllKeys, commandSuId);
+
+                KmmBody rspKmmBody = TxRxKmm(cmdKmmBody);
+
+                if (rspKmmBody is DeleteAuthenticationKeyResponse)
+                {
+                    DeleteAuthenticationKeyResponse kmm = rspKmmBody as DeleteAuthenticationKeyResponse;
+
+                    if (kmm.Status != OperationStatus.CommandWasPerformed)
+                    {
+                        throw new Exception(string.Format("abnormal response - status: {0} (0x{1:X2})", kmm.Status.ToString(), (byte)kmm.Status));
+                    }
+                }
+                else if (rspKmmBody is NegativeAcknowledgment)
+                {
+                    NegativeAcknowledgment kmm = rspKmmBody as NegativeAcknowledgment;
+
+                    string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                    string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
+                }
+                else
+                {
+                    throw new Exception("unexpected kmm");
+                }
+            }
+            catch
+            {
+                End();
+
+                throw;
+            }
+
+            End();
         }
 
         public void ViewSuidInfo()
         {
-            throw new NotImplementedException();
+            Begin();
+
+            try
+            {
+                InventoryCommandListActiveSuId cmdKmmBody = new InventoryCommandListActiveSuId();
+
+                KmmBody rspKmmBody = TxRxKmm(cmdKmmBody);
+
+                if (rspKmmBody is InventoryResponseListActiveSuId)
+                {
+                    InventoryResponseListActiveSuId kmm = rspKmmBody as InventoryResponseListActiveSuId;
+
+                    if (kmm.Status != OperationStatus.CommandWasPerformed)
+                    {
+                        throw new Exception(string.Format("abnormal response - status: {0} (0x{1:X2})", kmm.Status.ToString(), (byte)kmm.Status));
+                    }
+
+                    Log.Fatal("WACN: 0x{0:X}, System: 0x{1:X}, Unit: 0x{2:X}, Key Assigned: {3}, Is Active: {4}", kmm.SuId.WacnId, kmm.SuId.SystemId, kmm.SuId.UnitId, kmm.KeyAssigned, kmm.ActiveSuId); // TODO remove
+                }
+                else if (rspKmmBody is NegativeAcknowledgment)
+                {
+                    NegativeAcknowledgment kmm = rspKmmBody as NegativeAcknowledgment;
+
+                    string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                    string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                    throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
+                }
+                else
+                {
+                    throw new Exception("unexpected kmm");
+                }
+            }
+            catch
+            {
+                End();
+
+                throw;
+            }
+
+            End();
         }
 
         public void ViewActiveSuidInfo()

@@ -1,24 +1,11 @@
-﻿using KFDtool.P25.Constant;
-using KFDtool.P25.Generator;
-using KFDtool.P25.TransferConstructs;
-using KFDtool.P25.Validator;
-using KFDtool.Shared;
+﻿using KFDtool.P25.TransferConstructs;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace KFDtool.Gui.Control
 {

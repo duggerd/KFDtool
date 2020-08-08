@@ -12,7 +12,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ReadAdapterProtocolVersion(device);
+                return InteractTwiKfdtool.ReadAdapterProtocolVersion(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -24,7 +24,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ReadFirmwareVersion(device);
+                return InteractTwiKfdtool.ReadFirmwareVersion(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -36,7 +36,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ReadUniqueId(device);
+                return InteractTwiKfdtool.ReadUniqueId(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -48,7 +48,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ReadModel(device);
+                return InteractTwiKfdtool.ReadModel(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -60,7 +60,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ReadHardwareRevision(device);
+                return InteractTwiKfdtool.ReadHardwareRevision(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -72,7 +72,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ReadSerialNumber(device);
+                return InteractTwiKfdtool.ReadSerialNumber(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -84,7 +84,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                InteractTwiKfdtool.EnterBslMode(device);
+                InteractTwiKfdtool.EnterBslMode(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -96,7 +96,7 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.SelfTest(device);
+                return InteractTwiKfdtool.SelfTest(device.TwiKfdtoolDevice);
             }
             else
             {
@@ -108,11 +108,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                InteractTwiKfdtool.CheckTargetMrConnection(device);
+                InteractTwiKfdtool.CheckTargetMrConnection(device.TwiKfdtoolDevice);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                InteractDliIp.CheckTargetMrConnection(device);
+                InteractDliIp.CheckTargetMrConnection(device.DliIpDevice);
             }
             else
             {
@@ -124,11 +124,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                InteractTwiKfdtool.Keyload(device, keys);
+                InteractTwiKfdtool.Keyload(device.TwiKfdtoolDevice, keys);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                InteractDliIp.Keyload(device, keys);
+                InteractDliIp.Keyload(device.DliIpDevice, keys);
             }
             else
             {
@@ -140,11 +140,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                InteractTwiKfdtool.EraseKey(device, keys);
+                InteractTwiKfdtool.EraseKey(device.TwiKfdtoolDevice, keys);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                InteractDliIp.EraseKey(device, keys);
+                InteractDliIp.EraseKey(device.DliIpDevice, keys);
             }
             else
             {
@@ -156,11 +156,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                InteractTwiKfdtool.EraseAllKeys(device);
+                InteractTwiKfdtool.EraseAllKeys(device.TwiKfdtoolDevice);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                InteractDliIp.EraseAllKeys(device);
+                InteractDliIp.EraseAllKeys(device.DliIpDevice);
             }
             else
             {
@@ -172,11 +172,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ViewKeyInfo(device);
+                return InteractTwiKfdtool.ViewKeyInfo(device.TwiKfdtoolDevice);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.ViewKeyInfo(device);
+                return InteractDliIp.ViewKeyInfo(device.DliIpDevice);
             }
             else
             {
@@ -188,11 +188,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.LoadConfig(device, kmfRsi, mnp);
+                return InteractTwiKfdtool.LoadConfig(device.TwiKfdtoolDevice, kmfRsi, mnp);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.LoadConfig(device, kmfRsi, mnp);
+                return InteractDliIp.LoadConfig(device.DliIpDevice, kmfRsi, mnp);
             }
             else
             {
@@ -204,11 +204,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ChangeRsi(device, rsiOld, rsiNew, mnp);
+                return InteractTwiKfdtool.ChangeRsi(device.TwiKfdtoolDevice, rsiOld, rsiNew, mnp);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.ChangeRsi(device, rsiOld, rsiNew, mnp);
+                return InteractDliIp.ChangeRsi(device.DliIpDevice, rsiOld, rsiNew, mnp);
             }
             else
             {
@@ -220,11 +220,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ViewRsiItems(device);
+                return InteractTwiKfdtool.ViewRsiItems(device.TwiKfdtoolDevice);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.ViewRsiItems(device);
+                return InteractDliIp.ViewRsiItems(device.DliIpDevice);
             }
             else
             {
@@ -236,11 +236,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ViewMnp(device);
+                return InteractTwiKfdtool.ViewMnp(device.TwiKfdtoolDevice);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.ViewMnp(device);
+                return InteractDliIp.ViewMnp(device.DliIpDevice);
             }
             else
             {
@@ -252,11 +252,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ViewKmfRsi(device);
+                return InteractTwiKfdtool.ViewKmfRsi(device.TwiKfdtoolDevice);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.ViewKmfRsi(device);
+                return InteractDliIp.ViewKmfRsi(device.DliIpDevice);
             }
             else
             {
@@ -268,11 +268,11 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ViewKeysetTaggingInfo(device);
+                return InteractTwiKfdtool.ViewKeysetTaggingInfo(device.TwiKfdtoolDevice);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.ViewKeysetTaggingInfo(device);
+                return InteractDliIp.ViewKeysetTaggingInfo(device.DliIpDevice);
             }
             else
             {
@@ -284,15 +284,47 @@ namespace KFDtool.P25.TransferConstructs
         {
             if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
             {
-                return InteractTwiKfdtool.ActivateKeyset(device, keysetSuperseded, keysetActivated);
+                return InteractTwiKfdtool.ActivateKeyset(device.TwiKfdtoolDevice, keysetSuperseded, keysetActivated);
             }
             else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
             {
-                return InteractDliIp.ActivateKeyset(device, keysetSuperseded, keysetActivated);
+                return InteractDliIp.ActivateKeyset(device.DliIpDevice, keysetSuperseded, keysetActivated);
             }
             else
             {
                 throw new Exception(string.Format("The device type {0} does not support ActivateKeyset", device.DeviceType.ToString()));
+            }
+        }
+
+        public static void LoadAuthenticationKey(BaseDevice device, bool targetSpecificSuId, int wacnId, int systemId, int unitId, byte[] key)
+        {
+            if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
+            {
+                InteractTwiKfdtool.LoadAuthenticationKey(device.TwiKfdtoolDevice, targetSpecificSuId, wacnId, systemId, unitId, key);
+            }
+            else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
+            {
+                InteractDliIp.LoadAuthenticationKey(device.DliIpDevice, targetSpecificSuId, wacnId, systemId, unitId, key);
+            }
+            else
+            {
+                throw new Exception(string.Format("The device type {0} does not support LoadAuthenticationKey", device.DeviceType.ToString()));
+            }
+        }
+
+        public static void DeleteAuthenticationKey(BaseDevice device, bool targetSpecificSuId, bool deleteAllKeys, int wacnId, int systemId, int unitId)
+        {
+            if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
+            {
+                InteractTwiKfdtool.DeleteAuthenticationKey(device.TwiKfdtoolDevice, targetSpecificSuId, deleteAllKeys, wacnId, systemId, unitId);
+            }
+            else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
+            {
+                InteractDliIp.DeleteAuthenticationKey(device.DliIpDevice, targetSpecificSuId, deleteAllKeys, wacnId, systemId, unitId);
+            }
+            else
+            {
+                throw new Exception(string.Format("The device type {0} does not support LoadAuthenticationKey", device.DeviceType.ToString()));
             }
         }
     }

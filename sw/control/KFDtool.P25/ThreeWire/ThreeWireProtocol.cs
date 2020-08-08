@@ -1,13 +1,10 @@
 ﻿using KFDtool.Adapter.Protocol.Adapter;
-using KFDtool.P25.Constant;
 using KFDtool.P25.DeviceProtocol;
 using KFDtool.P25.Kmm;
 using KFDtool.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KFDtool.P25.ThreeWire
 {

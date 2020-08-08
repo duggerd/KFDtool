@@ -35,6 +35,8 @@
                     <MenuItem Name="NavigateP25ViewKeysetInfo" Header="_View Keyset Info" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                     <MenuItem Name="NavigateP25ViewRsiConfig" Header="_RSI Configuration" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                     <MenuItem Name="NavigateP25KmfConfig" Header="_KMF Configuration" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
+                    <MenuItem Name="NavigateP25LoadAuthenticationKey" Header="_Load Authentication Key" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
+                    <MenuItem Name="NavigateP25DeleteAuthenticationKey" Header="_Delete Authentication Key" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Name="P25MrMenu" Header="_P25 MR">
                     <MenuItem Name="NavigateP25MrEmulator" Header="_Emulator" IsCheckable="True" Click="Navigate_MenuItem_Click" />

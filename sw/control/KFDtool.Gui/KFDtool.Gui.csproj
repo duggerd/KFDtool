@@ -71,11 +71,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Control\P25DeleteAuthenticationKey.xaml.cs">
+      <DependentUpon>P25DeleteAuthenticationKey.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\P25EraseAllKeys.xaml.cs">
       <DependentUpon>P25EraseAllKeys.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\P25KeyErase.xaml.cs">
       <DependentUpon>P25KeyErase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\P25LoadAuthenticationKey.xaml.cs">
+      <DependentUpon>P25LoadAuthenticationKey.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\P25MrEmulator.xaml.cs">
       <DependentUpon>P25MrEmulator.xaml</DependentUpon>
@@ -127,11 +133,19 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Converters.cs" />
+    <Page Include="Control\P25DeleteAuthenticationKey.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\P25EraseAllKeys.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\P25KeyErase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\P25LoadAuthenticationKey.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

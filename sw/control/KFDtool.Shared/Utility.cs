@@ -28,6 +28,11 @@ namespace KFDtool.Shared
             return BitConverter.ToString(b.ToArray());
         }
 
+        public static string DataFormat(byte[] b)
+        {
+            return BitConverter.ToString(b);
+        }
+
         public static byte[] Compress(byte[] data)
         {
             byte[] buffer = data;

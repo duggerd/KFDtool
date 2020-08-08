@@ -1,10 +1,6 @@
-﻿using KFDtool.P25.Constant;
+﻿using KFDtool.P25.Kmm;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace KFDtool.Gui.Converters

@@ -1,5 +1,4 @@
-﻿using KFDtool.P25.DataLinkIndependent;
-using KFDtool.P25.ManualRekey;
+﻿using KFDtool.P25.ManualRekey;
 using KFDtool.P25.NetworkProtocol;
 using System;
 using System.Collections.Generic;
@@ -8,30 +7,15 @@ namespace KFDtool.P25.TransferConstructs
 {
     public class InteractDliIp
     {
-        private static DataLinkIndependentProtocol GetDli(BaseDevice device)
+        private static ManualRekeyApplication GetMra(DliIpDevice device)
         {
-            if (device.DliIpDevice.Protocol == DliIpDevice.ProtocolOptions.UDP)
+            if (device.ProtocolType == DliIpDevice.ProtocolOptions.UDP)
             {
                 int timeout = 5000;
 
-                UdpProtocol udpProtocol = new UdpProtocol(device.DliIpDevice.Hostname, device.DliIpDevice.Port, timeout);
+                UdpProtocol udpProtocol = new UdpProtocol(device.Hostname, device.Port, timeout);
 
-                bool motVariant;
-
-                if (device.DliIpDevice.Variant == DliIpDevice.VariantOptions.Standard)
-                {
-                    motVariant = false;
-                }
-                else if (device.DliIpDevice.Variant == DliIpDevice.VariantOptions.Motorola)
-                {
-                    motVariant = true;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("Variant");
-                }
-
-                return new DataLinkIndependentProtocol(udpProtocol, motVariant);
+                return new ManualRekeyApplication(udpProtocol, device.SessionControlType);
             }
             else
             {
@@ -39,44 +23,13 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        private static ManualRekeyApplication GetMra(BaseDevice device)
-        {
-            if (device.DliIpDevice.Protocol == DliIpDevice.ProtocolOptions.UDP)
-            {
-                int timeout = 5000;
-
-                UdpProtocol udpProtocol = new UdpProtocol(device.DliIpDevice.Hostname, device.DliIpDevice.Port, timeout);
-
-                bool motVariant;
-
-                if (device.DliIpDevice.Variant == DliIpDevice.VariantOptions.Standard)
-                {
-                    motVariant = false;
-                }
-                else if (device.DliIpDevice.Variant == DliIpDevice.VariantOptions.Motorola)
-                {
-                    motVariant = true;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("Variant");
-                }
-
-                return new ManualRekeyApplication(udpProtocol, motVariant);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Protocol");
-            }
-        }
-
-        public static void CheckTargetMrConnection(BaseDevice device)
+        public static void CheckTargetMrConnection(DliIpDevice device)
         {
             try
             {
-                DataLinkIndependentProtocol dli = GetDli(device);
+                ManualRekeyApplication mra = GetMra(device);
 
-                dli.CheckTargetMrConnection();
+                mra.CheckTargetMrConnection();
             }
             catch (Exception)
             {
@@ -84,7 +37,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static void Keyload(BaseDevice device, List<CmdKeyItem> keys)
+        public static void Keyload(DliIpDevice device, List<CmdKeyItem> keys)
         {
             try
             {
@@ -98,7 +51,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static void EraseKey(BaseDevice device, List<CmdKeyItem> keys)
+        public static void EraseKey(DliIpDevice device, List<CmdKeyItem> keys)
         {
             try
             {
@@ -112,7 +65,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static void EraseAllKeys(BaseDevice device)
+        public static void EraseAllKeys(DliIpDevice device)
         {
             try
             {
@@ -126,7 +79,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static List<RspKeyInfo> ViewKeyInfo(BaseDevice device)
+        public static List<RspKeyInfo> ViewKeyInfo(DliIpDevice device)
         {
             try
             {
@@ -140,7 +93,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static RspRsiInfo LoadConfig(BaseDevice device, int kmfRsi, int mnp)
+        public static RspRsiInfo LoadConfig(DliIpDevice device, int kmfRsi, int mnp)
         {
             try
             {
@@ -154,7 +107,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static RspRsiInfo ChangeRsi(BaseDevice device, int rsiOld, int rsiNew, int mnp)
+        public static RspRsiInfo ChangeRsi(DliIpDevice device, int rsiOld, int rsiNew, int mnp)
         {
             try
             {
@@ -168,7 +121,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static List<RspRsiInfo> ViewRsiItems(BaseDevice device)
+        public static List<RspRsiInfo> ViewRsiItems(DliIpDevice device)
         {
             try
             {
@@ -182,7 +135,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static int ViewMnp(BaseDevice device)
+        public static int ViewMnp(DliIpDevice device)
         {
             try
             {
@@ -196,7 +149,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static int ViewKmfRsi(BaseDevice device)
+        public static int ViewKmfRsi(DliIpDevice device)
         {
             try
             {
@@ -210,7 +163,7 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static List<RspKeysetInfo> ViewKeysetTaggingInfo(BaseDevice device)
+        public static List<RspKeysetInfo> ViewKeysetTaggingInfo(DliIpDevice device)
         {
             try
             {
@@ -224,13 +177,41 @@ namespace KFDtool.P25.TransferConstructs
             }
         }
 
-        public static RspChangeoverInfo ActivateKeyset(BaseDevice device, int keysetSuperseded, int keysetActivated)
+        public static RspChangeoverInfo ActivateKeyset(DliIpDevice device, int keysetSuperseded, int keysetActivated)
         {
             try
             {
                 ManualRekeyApplication mra = GetMra(device);
 
                 return mra.ActivateKeyset(keysetSuperseded, keysetActivated);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static void LoadAuthenticationKey(DliIpDevice device, bool targetSpecificSuId, int wacnId, int systemId, int unitId, byte[] key)
+        {
+            try
+            {
+                ManualRekeyApplication mra = GetMra(device);
+
+                mra.LoadAuthenticationKey(targetSpecificSuId, wacnId, systemId, unitId, key);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static void DeleteAuthenticationKey(DliIpDevice device, bool targetSpecificSuId, bool deleteAllKeys, int wacnId, int systemId, int unitId)
+        {
+            try
+            {
+                ManualRekeyApplication mra = GetMra(device);
+
+                mra.DeleteAuthenticationKey(targetSpecificSuId, deleteAllKeys, wacnId, systemId, unitId);
             }
             catch (Exception)
             {

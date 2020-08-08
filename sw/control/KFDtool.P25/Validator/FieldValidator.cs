@@ -1,10 +1,8 @@
-﻿using KFDtool.P25.Constant;
+﻿using KFDtool.P25.Kmm;
 using KFDtool.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KFDtool.P25.Validator
 {
@@ -97,7 +95,7 @@ namespace KFDtool.P25.Validator
             return result;
         }
 
-        public static Tuple<ValidateResult,string> KeyloadValidate(int keysetId, int sln, bool isKek, int keyId, int algId, List<byte> key)
+        public static Tuple<ValidateResult, string> KeyloadValidate(int keysetId, int sln, bool isKek, int keyId, int algId, List<byte> key)
         {
             if (!IsValidKeysetId(keysetId))
             {

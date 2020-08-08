@@ -48,10 +48,10 @@ namespace KFDtool.Gui
             SelectedDevice.TwiKfdtoolDevice.ComPort = string.Empty;
 
             SelectedDevice.DliIpDevice = new DliIpDevice();
-            SelectedDevice.DliIpDevice.Protocol = DliIpDevice.ProtocolOptions.UDP;
+            SelectedDevice.DliIpDevice.ProtocolType = DliIpDevice.ProtocolOptions.UDP;
             SelectedDevice.DliIpDevice.Hostname = "192.168.128.1";
             SelectedDevice.DliIpDevice.Port = 49644;
-            SelectedDevice.DliIpDevice.Variant = DliIpDevice.VariantOptions.Motorola;
+            SelectedDevice.DliIpDevice.SessionControlType = SessionControlOptions.Motorola;
 
             SelectedDevice.DeviceType = BaseDevice.DeviceTypeOptions.TwiKfdtool;
         }

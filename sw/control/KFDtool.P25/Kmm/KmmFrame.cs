@@ -1,11 +1,6 @@
-﻿using KFDtool.P25.Constant;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KFDtool.P25.Kmm
 {
@@ -124,7 +119,19 @@ namespace KFDtool.P25.Kmm
             byte[] messageBody = new byte[messageBodyLength];
             Array.Copy(contents, 10, messageBody, 0, messageBodyLength);
 
-            if ((MessageId)messageId == MessageId.InventoryCommand)
+            if ((MessageId)messageId == MessageId.ChangeRsiResponse)
+            {
+                KmmBody kmmBody = new ChangeRsiResponse();
+                kmmBody.Parse(messageBody);
+                KmmBody = kmmBody;
+            }
+            else if ((MessageId)messageId == MessageId.ChangeoverResponse)
+            {
+                KmmBody kmmBody = new ChangeoverResponse();
+                kmmBody.Parse(messageBody);
+                KmmBody = kmmBody;
+            }
+            else if ((MessageId)messageId == MessageId.InventoryCommand)
             {
                 if (messageBody.Length > 0)
                 {
@@ -135,7 +142,6 @@ namespace KFDtool.P25.Kmm
                         KmmBody kmmBody = new InventoryCommandListActiveKsetIds();
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
-
                     }
                     else if (inventoryType == InventoryType.ListRsiItems)
                     {
@@ -170,7 +176,30 @@ namespace KFDtool.P25.Kmm
                         KmmBody kmmBody = new InventoryResponseListActiveKsetIds();
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
-
+                    }
+                    else if (inventoryType == InventoryType.ListRsiItems)
+                    {
+                        KmmBody kmmBody = new InventoryResponseListRsiItems();
+                        kmmBody.Parse(messageBody);
+                        KmmBody = kmmBody;
+                    }
+                    else if (inventoryType == InventoryType.ListActiveSuId)
+                    {
+                        KmmBody kmmBody = new InventoryResponseListActiveSuId();
+                        kmmBody.Parse(messageBody);
+                        KmmBody = kmmBody;
+                    }
+                    else if (inventoryType == InventoryType.ListSuIdItems)
+                    {
+                        KmmBody kmmBody = new InventoryResponseListSuIdItems(messageBody);
+                        kmmBody.Parse(messageBody);
+                        KmmBody = kmmBody;
+                    }
+                    else if (inventoryType == InventoryType.ListKeysetTaggingInfo)
+                    {
+                        KmmBody kmmBody = new InventoryResponseListKeysetTaggingInfo();
+                        kmmBody.Parse(messageBody);
+                        KmmBody = kmmBody;
                     }
                     else if (inventoryType == InventoryType.ListActiveKeys)
                     {
@@ -178,31 +207,15 @@ namespace KFDtool.P25.Kmm
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
                     }
-                    else if (inventoryType == InventoryType.ListRsiItems)
-                    {
-                        //cg
-                        KmmBody kmmBody = new InventoryResponseListRsiItems();
-                        kmmBody.Parse(messageBody);
-                        KmmBody = kmmBody;
-                    }
                     else if (inventoryType == InventoryType.ListMnp)
                     {
-                        //cg
                         KmmBody kmmBody = new InventoryResponseListMnp();
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
                     }
                     else if (inventoryType == InventoryType.ListKmfRsi)
                     {
-                        //cg
                         KmmBody kmmBody = new InventoryResponseListKmfRsi();
-                        kmmBody.Parse(messageBody);
-                        KmmBody = kmmBody;
-                    }
-                    else if (inventoryType == InventoryType.ListKeysetTaggingInfo)
-                    {
-                        //cg
-                        KmmBody kmmBody = new InventoryResponseListKeysetTaggingInfo();
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
                     }
@@ -222,7 +235,7 @@ namespace KFDtool.P25.Kmm
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.NegativeAcknowledgment)
+            else if ((MessageId)messageId == MessageId.NegativeAcknowledgment) // TODO seems different for DLI LLA?
             {
                 KmmBody kmmBody = new NegativeAcknowledgment();
                 kmmBody.Parse(messageBody);
@@ -240,24 +253,15 @@ namespace KFDtool.P25.Kmm
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.LoadConfigResponse)
+            else if ((MessageId)messageId == MessageId.LoadAuthenticationKeyResponse)
             {
-                //cg
-                KmmBody kmmBody = new LoadConfigResponse();
+                KmmBody kmmBody = new LoadAuthenticationKeyResponse(messageBody);
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.ChangeRsiResponse)
+            else if ((MessageId)messageId == MessageId.DeleteAuthenticationKeyResponse)
             {
-                //cg
-                KmmBody kmmBody = new ChangeRsiResponse();
-                kmmBody.Parse(messageBody);
-                KmmBody = kmmBody;
-            }
-            else if ((MessageId)messageId == MessageId.ChangeoverResponse)
-            {
-                //cg
-                KmmBody kmmBody = new ChangeoverResponse();
+                KmmBody kmmBody = new DeleteAuthenticationKeyResponse(messageBody);
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
@@ -272,14 +276,12 @@ namespace KFDtool.P25.Kmm
                         KmmBody kmmBody = new Mfid90SessionControlVer1();
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
-
                     }
                     else if (mfid == 0x90 && version == 0x01)
                     {
                         KmmBody kmmBody = new Mfid90SessionControlVer1();
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
-
                     }
                     else
                     {
@@ -290,6 +292,12 @@ namespace KFDtool.P25.Kmm
                 {
                     throw new Exception("session control body length zero");
                 }
+            }
+            else if ((MessageId)messageId == MessageId.LoadConfigResponse)
+            {
+                KmmBody kmmBody = new LoadConfigResponse();
+                kmmBody.Parse(messageBody);
+                KmmBody = kmmBody;
             }
             else
             {
@@ -309,6 +317,11 @@ namespace KFDtool.P25.Kmm
             }
 
             byte mfid = contents[1];
+
+            if (mfid != 0x00)
+            {
+                throw new Exception(string.Format("nonzero mfid: 0x{0:X2}, expected 0x00", mfid)); // TODO remove
+            }
 
             // TODO algid
 

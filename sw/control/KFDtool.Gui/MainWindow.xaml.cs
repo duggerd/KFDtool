@@ -163,6 +163,20 @@ namespace KFDtool.Gui
                 Settings.ScreenCurrent = item;
                 UpdateTitle("P25 KFD - KMF Configuration");
             }
+            else if (item == "NavigateP25LoadAuthenticationKey")
+            {
+                control = new Control.P25LoadAuthenticationKey();
+                NavigateP25LoadAuthenticationKey.IsChecked = true;
+                Settings.ScreenCurrent = item;
+                UpdateTitle("P25 KFD - Load Authentication Key");
+            }
+            else if (item == "NavigateP25DeleteAuthenticationKey")
+            {
+                control = new Control.P25DeleteAuthenticationKey();
+                NavigateP25DeleteAuthenticationKey.IsChecked = true;
+                Settings.ScreenCurrent = item;
+                UpdateTitle("P25 KFD - Delete Authentication Key");
+            }
             else if (item == "NavigateP25MrEmulator")
             {
                 control = new Control.P25MrEmulator();
@@ -558,11 +572,11 @@ namespace KFDtool.Gui
         private void UpdateDeviceDliIp()
         {
             lblSelectedDevice.Text = string.Format(
-                "Selected Device - Type: DLI (IP) - Protocol: {0}, Hostname: {1}, Port: {2}, Variant: {3}",
-                Settings.SelectedDevice.DliIpDevice.Protocol.ToString(),
+                "Selected Device - Type: DLI (IP) - Protocol: {0}, Hostname: {1}, Port: {2}, Session Control: {3}",
+                Settings.SelectedDevice.DliIpDevice.ProtocolType.ToString(),
                 Settings.SelectedDevice.DliIpDevice.Hostname,
                 Settings.SelectedDevice.DliIpDevice.Port.ToString(),
-                Settings.SelectedDevice.DliIpDevice.Variant.ToString()
+                Settings.SelectedDevice.DliIpDevice.SessionControlType.ToString()
             );
         }
 

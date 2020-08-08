@@ -21,6 +21,8 @@ namespace KFDtool.P25.Kmm
         ListLongKeyAssignmentItemsForLLIDs = 0x0A,
         ListRsiItems = 0x0B,
         ListKeysetTaggingInfo = 0xF9,// Renamed for consistency
+        ListActiveSuId = 0xF7,
+        ListSuIdItems = 0xF8,
         ListActiveKeys = 0xFD,
         ListMnp = 0xFE,
         ListKmfRsi = 0xFF

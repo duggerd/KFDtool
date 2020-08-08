@@ -1,13 +1,8 @@
 ﻿using KFDtool.P25.DeviceProtocol;
 using KFDtool.P25.Kmm;
 using KFDtool.P25.NetworkProtocol;
+using KFDtool.P25.TransferConstructs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KFDtool.P25.DataLinkIndependent
 {
@@ -17,12 +12,12 @@ namespace KFDtool.P25.DataLinkIndependent
 
         private UdpProtocol Protocol;
 
-        private bool MotVariant;
+        private SessionControlOptions SessionControlType;
 
-        public DataLinkIndependentProtocol(UdpProtocol udpProtocol, bool motVariant)
+        public DataLinkIndependentProtocol(UdpProtocol udpProtocol, SessionControlOptions sessionControlType)
         {
             Protocol = udpProtocol;
-            MotVariant = motVariant;
+            SessionControlType = sessionControlType;
         }
 
         public void SendKeySignature()
@@ -32,62 +27,43 @@ namespace KFDtool.P25.DataLinkIndependent
 
         public void InitSession()
         {
-            if (MotVariant)
+            if (SessionControlType == SessionControlOptions.Standard)
+            {
+                SendReadyRequest();
+            }
+            else if (SessionControlType == SessionControlOptions.Motorola)
             {
                 Mfid90SendConnect();
 
                 Mfid90SendBeginSession();
-            }
-            else
-            {
-                SendReadyRequest();
             }
         }
 
         public void EndSession()
         {
-            if (MotVariant)
-            {
-                Mfid90SendTransferDone();
-
-                Mfid90SendEndSession();
-
-                Mfid90SendDisconnect();
-            }
-            else
+            if (SessionControlType == SessionControlOptions.Standard)
             {
                 SendTransferDone();
 
                 SendEndSession();
 
                 SendDisconnect();
+            }
+            else if (SessionControlType == SessionControlOptions.Motorola)
+            {
+                Mfid90SendTransferDone();
+
+                Mfid90SendEndSession();
+
+                Mfid90SendDisconnect();
             }
         }
 
         public void CheckTargetMrConnection()
         {
-            if (MotVariant)
-            {
-                Mfid90SendConnect();
+            InitSession();
 
-                Mfid90SendBeginSession();
-
-                Mfid90SendTransferDone();
-
-                Mfid90SendEndSession();
-
-                Mfid90SendDisconnect();
-            }
-            else
-            {
-                SendReadyRequest();
-
-                SendTransferDone();
-
-                SendEndSession();
-
-                SendDisconnect();
-            }
+            EndSession();
         }
 
         public byte[] PerformKmmTransfer(byte[] toRadio)

@@ -1,6 +1,6 @@
 ﻿using KFDtool.Container;
-using KFDtool.P25.Constant;
 using KFDtool.P25.Generator;
+using KFDtool.P25.Kmm;
 using KFDtool.P25.Validator;
 using KFDtool.Shared;
 using System;
@@ -16,11 +16,11 @@ namespace KFDtool.Gui.Dialog
     /// </summary>
     public partial class ContainerEditKeyControl : UserControl
     {
-        private KeyItem LocalKey { get; set; }
+        private Container.KeyItem LocalKey { get; set; }
 
         private bool IsKek { get; set; }
 
-        public ContainerEditKeyControl(KeyItem keyItem)
+        public ContainerEditKeyControl(Container.KeyItem keyItem)
         {
             InitializeComponent();
 
@@ -559,7 +559,7 @@ namespace KFDtool.Gui.Dialog
 
             if (txtName.Text != LocalKey.Name)
             {
-                foreach (KeyItem keyItem in Settings.ContainerInner.Keys)
+                foreach (Container.KeyItem keyItem in Settings.ContainerInner.Keys)
                 {
                     if (txtName.Text == keyItem.Name)
                     {

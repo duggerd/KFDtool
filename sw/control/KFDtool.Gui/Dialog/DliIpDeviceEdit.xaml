@@ -8,19 +8,20 @@
         Title="DLI (IP) Connection Settings" Height="215" Width="250" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
         <Label Content="Protocol" HorizontalAlignment="Left" Margin="12,9,0,0" VerticalAlignment="Top"/>
-        <ComboBox Name="PcbProtocol" HorizontalAlignment="Left" Margin="103,13,0,0" VerticalAlignment="Top" Width="120">
+        <ComboBox Name="PcbProtocol" HorizontalAlignment="Left" Margin="109,13,0,0" VerticalAlignment="Top" Width="120">
             <ComboBoxItem Name="PcbiProtocolUdp" Content="UDP"/>
         </ComboBox>
         <Label Content="Hostname" HorizontalAlignment="Left" Margin="12,40,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="TbHostname" HorizontalAlignment="Left" Height="23" Margin="103,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="TbHostname" HorizontalAlignment="Left" Height="23" Margin="109,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Port" HorizontalAlignment="Left" Margin="12,71,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="TbPort" HorizontalAlignment="Left" Height="23" Margin="103,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Variant" HorizontalAlignment="Left" Margin="12,102,0,0" VerticalAlignment="Top"/>
-        <ComboBox Name="PcbVariant" HorizontalAlignment="Left" Margin="103,106,0,0" VerticalAlignment="Top" Width="120">
-            <ComboBoxItem Name="PcbiVariantStandard" Content="Standard"/>
-            <ComboBoxItem Name="PcbiVariantMotorola" Content="Motorola"/>
+        <TextBox Name="TbPort" HorizontalAlignment="Left" Height="23" Margin="109,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Session Control" HorizontalAlignment="Left" Margin="12,102,0,0" VerticalAlignment="Top"/>
+        <ComboBox Name="CbSessionControl" HorizontalAlignment="Left" Margin="109,106,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Name="CbiSessionControlNone" Content="None"/>
+            <ComboBoxItem Name="CbiSessionControlStandard" Content="Standard"/>
+            <ComboBoxItem Name="CbiSessionControlMotorola" Content="Motorola"/>
         </ComboBox>
-        <Button Content="Save" Click="Save_Button_Click" HorizontalAlignment="Left" Margin="43,142,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Cancel" Click="Cancel_Button_Click" HorizontalAlignment="Left" Margin="123,142,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Save" Click="Save_Button_Click" HorizontalAlignment="Left" Margin="37,140,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Cancel" Click="Cancel_Button_Click" HorizontalAlignment="Left" Margin="117,140,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>
