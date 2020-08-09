@@ -324,7 +324,39 @@ namespace KFDtool.P25.TransferConstructs
             }
             else
             {
-                throw new Exception(string.Format("The device type {0} does not support LoadAuthenticationKey", device.DeviceType.ToString()));
+                throw new Exception(string.Format("The device type {0} does not support DeleteAuthenticationKey", device.DeviceType.ToString()));
+            }
+        }
+
+        public static List<RspAuthKeyInfo> ViewSuIdInfo(BaseDevice device)
+        {
+            if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
+            {
+                return InteractTwiKfdtool.ViewSuIdInfo(device.TwiKfdtoolDevice);
+            }
+            else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
+            {
+                return InteractDliIp.ViewSuIdInfo(device.DliIpDevice);
+            }
+            else
+            {
+                throw new Exception(string.Format("The device type {0} does not support ListSuIdItems", device.DeviceType.ToString()));
+            }
+        }
+
+        public static RspAuthKeyInfo ViewActiveSuIdInfo(BaseDevice device)
+        {
+            if (device.DeviceType == BaseDevice.DeviceTypeOptions.TwiKfdtool)
+            {
+                return InteractTwiKfdtool.ViewActiveSuIdInfo(device.TwiKfdtoolDevice);
+            }
+            else if (device.DeviceType == BaseDevice.DeviceTypeOptions.DliIp)
+            {
+                return InteractDliIp.ViewActiveSuIdInfo(device.DliIpDevice);
+            }
+            else
+            {
+                throw new Exception(string.Format("The device type {0} does not support ViewActiveSuIdInfo", device.DeviceType.ToString()));
             }
         }
     }

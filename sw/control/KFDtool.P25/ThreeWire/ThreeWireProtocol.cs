@@ -2,6 +2,7 @@
 using KFDtool.P25.DeviceProtocol;
 using KFDtool.P25.Kmm;
 using KFDtool.Shared;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace KFDtool.P25.ThreeWire
 {
     public class ThreeWireProtocol : IDeviceProtocol
     {
-        private static NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
+        private static Logger Log = LogManager.GetCurrentClassLogger();
 
         private const int TIMEOUT_NONE = 0; // no timeout
         private const int TIMEOUT_STD = 5000; // 5 second timeout

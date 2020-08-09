@@ -2,13 +2,14 @@
 using KFDtool.P25.Kmm;
 using KFDtool.P25.NetworkProtocol;
 using KFDtool.P25.TransferConstructs;
+using KFDtool.Shared;
 using System;
 
 namespace KFDtool.P25.DataLinkIndependent
 {
     public class DataLinkIndependentProtocol : IDeviceProtocol
     {
-        private static NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private UdpProtocol Protocol;
 
@@ -68,11 +69,11 @@ namespace KFDtool.P25.DataLinkIndependent
 
         public byte[] PerformKmmTransfer(byte[] toRadio)
         {
-            Log.Debug("TX: {0}", BitConverter.ToString(toRadio));
+            Logger.Debug("TX: {0}", Utility.DataFormat(toRadio));
 
             byte[] fromRadio = Protocol.TxRx(toRadio);
 
-            Log.Debug("RX: {0}", BitConverter.ToString(fromRadio));
+            Logger.Debug("RX: {0}", Utility.DataFormat(fromRadio));
 
             return fromRadio;
         }
@@ -101,6 +102,14 @@ namespace KFDtool.P25.DataLinkIndependent
                 {
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
+            }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
             }
             else
             {
@@ -133,6 +142,14 @@ namespace KFDtool.P25.DataLinkIndependent
                 {
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
+            }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
             }
             else
             {
@@ -167,6 +184,14 @@ namespace KFDtool.P25.DataLinkIndependent
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
             }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
+            }
             else
             {
                 throw new Exception("unexpected kmm");
@@ -197,6 +222,14 @@ namespace KFDtool.P25.DataLinkIndependent
                 {
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
+            }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
             }
             else
             {
@@ -230,6 +263,14 @@ namespace KFDtool.P25.DataLinkIndependent
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
             }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
+            }
             else
             {
                 throw new Exception("unexpected kmm");
@@ -260,6 +301,14 @@ namespace KFDtool.P25.DataLinkIndependent
                 {
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
+            }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
             }
             else
             {
@@ -294,6 +343,14 @@ namespace KFDtool.P25.DataLinkIndependent
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
             }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
+            }
             else
             {
                 throw new Exception("unexpected kmm");
@@ -324,6 +381,14 @@ namespace KFDtool.P25.DataLinkIndependent
                 {
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
+            }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
             }
             else
             {
@@ -356,6 +421,14 @@ namespace KFDtool.P25.DataLinkIndependent
                 {
                     throw new Exception(string.Format("received unexpected session control opcode (0x{0:X2}) {1}", (byte)kmm.SessionControlOpcode, kmm.SessionControlOpcode.ToString()));
                 }
+            }
+            else if (responseKmmBody is NegativeAcknowledgment)
+            {
+                NegativeAcknowledgment kmm = responseKmmBody as NegativeAcknowledgment;
+
+                string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
             }
             else
             {

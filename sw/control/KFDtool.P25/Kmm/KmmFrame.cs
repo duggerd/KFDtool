@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KFDtool.Shared;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,6 +7,8 @@ namespace KFDtool.P25.Kmm
 {
     public class KmmFrame
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public KmmBody KmmBody { get; private set; }
 
         // TODO src rsi
@@ -22,15 +25,15 @@ namespace KFDtool.P25.Kmm
             KmmBody = kmmBody;
         }
 
-        public KmmFrame(bool preamble, byte[] contents)
+        public KmmFrame(bool hasPreamble, byte[] contents)
         {
-            if (preamble)
+            if (hasPreamble)
             {
                 ParseWithPreamble(contents);
             }
             else
             {
-                Parse(0x00, contents);
+                Parse(contents);
             }
         }
 
@@ -102,14 +105,16 @@ namespace KFDtool.P25.Kmm
             return data.ToArray();
         }
 
-        private void Parse(byte mfid, byte[] contents)
+        private void Parse(byte[] contents)
         {
             if (contents.Length < 10)
             {
                 throw new ArgumentOutOfRangeException(string.Format("length mismatch - expected at least 10, got {0} - {1}", contents.Length.ToString(), BitConverter.ToString(contents)));
             }
 
-            byte messageId = contents[0];
+            MessageId messageId = (MessageId)contents[0];
+
+            Logger.Debug("rx standard mfid kmm frame, message id: {0} (0x{1:X2}), contents: {2}", messageId.ToString(), (byte)messageId, Utility.DataFormat(contents));
 
             int messageLength = 0;
             messageLength |= contents[1] << 8;
@@ -119,19 +124,19 @@ namespace KFDtool.P25.Kmm
             byte[] messageBody = new byte[messageBodyLength];
             Array.Copy(contents, 10, messageBody, 0, messageBodyLength);
 
-            if ((MessageId)messageId == MessageId.ChangeRsiResponse)
+            if (messageId == MessageId.ChangeRsiResponse)
             {
                 KmmBody kmmBody = new ChangeRsiResponse();
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.ChangeoverResponse)
+            else if (messageId == MessageId.ChangeoverResponse)
             {
                 KmmBody kmmBody = new ChangeoverResponse();
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.InventoryCommand)
+            else if (messageId == MessageId.InventoryCommand)
             {
                 if (messageBody.Length > 0)
                 {
@@ -165,7 +170,7 @@ namespace KFDtool.P25.Kmm
                     throw new Exception("inventory command length zero");
                 }
             }
-            else if ((MessageId)messageId == MessageId.InventoryResponse)
+            else if (messageId == MessageId.InventoryResponse)
             {
                 if (messageBody.Length > 0)
                 {
@@ -229,63 +234,57 @@ namespace KFDtool.P25.Kmm
                     throw new Exception("inventory response length zero");
                 }
             }
-            else if ((MessageId)messageId == MessageId.ModifyKeyCommand)
+            else if (messageId == MessageId.ModifyKeyCommand)
             {
                 KmmBody kmmBody = new ModifyKeyCommand();
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.NegativeAcknowledgment) // TODO seems different for DLI LLA?
+            else if (messageId == MessageId.NegativeAcknowledgment)
             {
                 KmmBody kmmBody = new NegativeAcknowledgment();
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.RekeyAcknowledgment)
+            else if (messageId == MessageId.RekeyAcknowledgment)
             {
                 KmmBody kmmBody = new RekeyAcknowledgment();
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.ZeroizeResponse)
+            else if (messageId == MessageId.ZeroizeResponse)
             {
                 KmmBody kmmBody = new ZeroizeResponse();
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.LoadAuthenticationKeyResponse)
+            else if (messageId == MessageId.LoadAuthenticationKeyResponse)
             {
                 KmmBody kmmBody = new LoadAuthenticationKeyResponse(messageBody);
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.DeleteAuthenticationKeyResponse)
+            else if (messageId == MessageId.DeleteAuthenticationKeyResponse)
             {
                 KmmBody kmmBody = new DeleteAuthenticationKeyResponse(messageBody);
                 kmmBody.Parse(messageBody);
                 KmmBody = kmmBody;
             }
-            else if ((MessageId)messageId == MessageId.SessionControl)
+            else if (messageId == MessageId.SessionControl)
             {
                 if (messageBody.Length > 0)
                 {
                     byte version = messageBody[0];
 
-                    if (mfid == 0x00 && version == 0x00)
+                    if (version == 0x00)
                     {
-                        KmmBody kmmBody = new Mfid90SessionControlVer1();
-                        kmmBody.Parse(messageBody);
-                        KmmBody = kmmBody;
-                    }
-                    else if (mfid == 0x90 && version == 0x01)
-                    {
-                        KmmBody kmmBody = new Mfid90SessionControlVer1();
+                        KmmBody kmmBody = new SessionControl();
                         kmmBody.Parse(messageBody);
                         KmmBody = kmmBody;
                     }
                     else
                     {
-                        throw new Exception(string.Format("unknown session control - mfid: 0x{0:X2}, version: 0x{1:X2}", mfid, version));
+                        throw new Exception(string.Format("unknown session control - version: 0x{0:X2}", version));
                     }
                 }
                 else
@@ -293,7 +292,7 @@ namespace KFDtool.P25.Kmm
                     throw new Exception("session control body length zero");
                 }
             }
-            else if ((MessageId)messageId == MessageId.LoadConfigResponse)
+            else if (messageId == MessageId.LoadConfigResponse)
             {
                 KmmBody kmmBody = new LoadConfigResponse();
                 kmmBody.Parse(messageBody);
@@ -301,7 +300,64 @@ namespace KFDtool.P25.Kmm
             }
             else
             {
-                throw new Exception(string.Format("unknown kmm - message id: 0x{0:X2}", messageId));
+                throw new Exception(string.Format("unknown kmm - message id: {0} (0x{1:X2})", messageId.ToString(), (byte)messageId));
+            }
+        }
+
+        private void Mfid90Parse(byte[] contents)
+        {
+            if (contents.Length < 10)
+            {
+                throw new ArgumentOutOfRangeException(string.Format("length mismatch - expected at least 10, got {0} - {1}", contents.Length.ToString(), BitConverter.ToString(contents)));
+            }
+
+            MessageId messageId = (MessageId)contents[0];
+
+            Logger.Debug("rx motorola mfid kmm frame, message id: {0} (0x{1:X2}), contents: {2}", messageId.ToString(), (byte)messageId, Utility.DataFormat(contents));
+
+            int messageLength = 0;
+            messageLength |= contents[1] << 8;
+            messageLength |= contents[2];
+
+            int messageBodyLength = messageLength - 7;
+            byte[] messageBody = new byte[messageBodyLength];
+            Array.Copy(contents, 10, messageBody, 0, messageBodyLength);
+
+            /*
+             * motorola likes using their mfid for _some_ standard kmms
+             * 
+             * this is probably because the standard kmms came from motorola's implementation
+             * and this behavior is intentional for backwards compatibility with older kvl firmware
+             * 
+             * so we don't have to duplicate each kmm, just handle the kmms we know are different
+             * and hand all other kmms with the motorola mfid to the standard handler
+             */
+
+            if (messageId == MessageId.SessionControl)
+            {
+                if (messageBody.Length > 0)
+                {
+                    byte version = messageBody[0];
+
+                    if (version == 0x01)
+                    {
+                        KmmBody kmmBody = new Mfid90SessionControlVer1();
+                        kmmBody.Parse(messageBody);
+                        KmmBody = kmmBody;
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format("unknown session control - version: 0x{0:X2}", version));
+                    }
+                }
+                else
+                {
+                    throw new Exception("session control body length zero");
+                }
+            }
+            else
+            {
+                Parse(contents);
             }
         }
 
@@ -309,19 +365,16 @@ namespace KFDtool.P25.Kmm
         {
             // TODO bounds check
 
-            byte version = contents[0];
+            const byte expectedVersion = 0x00;
 
-            if (version != 0x00)
+            byte parsedVersion = contents[0];
+
+            if (parsedVersion != expectedVersion)
             {
-                throw new Exception(string.Format("unknown preamble version: 0x{0:X2}, expected 0x00", version));
+                throw new Exception(string.Format("unknown preamble version: 0x{0:X2}, expected 0x{1:X2}", parsedVersion, expectedVersion));
             }
 
             byte mfid = contents[1];
-
-            if (mfid != 0x00)
-            {
-                throw new Exception(string.Format("nonzero mfid: 0x{0:X2}, expected 0x00", mfid)); // TODO remove
-            }
 
             // TODO algid
 
@@ -333,7 +386,18 @@ namespace KFDtool.P25.Kmm
 
             Array.Copy(contents, 14, frame, 0, (contents.Length - 14));
 
-            Parse(mfid, frame);
+            if (mfid == 0x00)
+            {
+                Parse(frame);
+            }
+            else if (mfid == 0x90)
+            {
+                Mfid90Parse(frame);
+            }
+            else
+            {
+                throw new Exception(string.Format("unknown mfid: 0x{0:X2}", mfid));
+            }
         }
     }
 }

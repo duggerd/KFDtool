@@ -177,6 +177,27 @@ namespace KFDtool.Gui
                 Settings.ScreenCurrent = item;
                 UpdateTitle("P25 KFD - Delete Authentication Key");
             }
+            else if (item == "NavigateP25DeleteAllAuthenticationKeys")
+            {
+                control = new Control.P25DeleteAllAuthenticationKeys();
+                NavigateP25DeleteAllAuthenticationKeys.IsChecked = true;
+                Settings.ScreenCurrent = item;
+                UpdateTitle("P25 KFD - Delete All Authentication Keys");
+            }
+            else if (item == "NavigateP25ViewSuIdInfo")
+            {
+                control = new Control.P25ViewSuIdInfo();
+                NavigateP25ViewSuIdInfo.IsChecked = true;
+                Settings.ScreenCurrent = item;
+                UpdateTitle("P25 KFD - View SUID Info");
+            }
+            else if (item == "NavigateP25ViewActiveSuIdInfo")
+            {
+                control = new Control.P25ViewActiveSuIdInfo();
+                NavigateP25ViewActiveSuIdInfo.IsChecked = true;
+                Settings.ScreenCurrent = item;
+                UpdateTitle("P25 KFD - View Active SUID Info");
+            }
             else if (item == "NavigateP25MrEmulator")
             {
                 control = new Control.P25MrEmulator();

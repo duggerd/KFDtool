@@ -1031,5 +1031,87 @@ namespace KFDtool.P25.TransferConstructs
                 }
             }
         }
+
+        public static List<RspAuthKeyInfo> ViewSuIdInfo(TwiKfdtoolDevice device)
+        {
+            if (device.ComPort == string.Empty)
+            {
+                throw new ArgumentException("No device selected");
+            }
+
+            AdapterProtocol ap = null;
+
+            try
+            {
+                ap = new AdapterProtocol(device.ComPort);
+
+                ap.Open();
+
+                ap.Clear();
+
+                ManualRekeyApplication mra = new ManualRekeyApplication(ap);
+
+                return mra.ViewSuIdInfo();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    if (ap != null)
+                    {
+                        ap.Close();
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Logger.Warn("could not close serial port: {0}", ex.Message);
+                }
+            }
+        }
+
+        public static RspAuthKeyInfo ViewActiveSuIdInfo(TwiKfdtoolDevice device)
+        {
+            if (device.ComPort == string.Empty)
+            {
+                throw new ArgumentException("No device selected");
+            }
+
+            AdapterProtocol ap = null;
+
+            try
+            {
+                ap = new AdapterProtocol(device.ComPort);
+
+                ap.Open();
+
+                ap.Clear();
+
+                ManualRekeyApplication mra = new ManualRekeyApplication(ap);
+
+                return mra.ViewActiveSuIdInfo();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    if (ap != null)
+                    {
+                        ap.Close();
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Logger.Warn("could not close serial port: {0}", ex.Message);
+                }
+            }
+        }
     }
 }

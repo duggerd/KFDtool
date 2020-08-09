@@ -97,6 +97,7 @@
     <Compile Include="TransferConstructs\RspKeyInfo.cs" />
     <Compile Include="TransferConstructs\RspKeysetInfo.cs" />
     <Compile Include="TransferConstructs\RspRsiInfo.cs" />
+    <Compile Include="TransferConstructs\RspAuthKeyInfo.cs" />
     <Compile Include="TransferConstructs\SessionControlOptions.cs" />
     <Compile Include="TransferConstructs\TwiKfdtoolDevice.cs" />
     <Compile Include="Validator\FieldValidator.cs" />

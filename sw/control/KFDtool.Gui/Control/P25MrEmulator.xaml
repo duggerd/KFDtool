@@ -9,6 +9,6 @@
     <Grid>
         <Button Name="StartButton" Content="Start" Click="Start_Button_Click" HorizontalAlignment="Left" Margin="214,21,0,0" VerticalAlignment="Top" Width="75"/>
         <Button Name="StopButton" Content="Stop" Click="Stop_Button_Click" HorizontalAlignment="Left" Margin="464,21,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBox Name="TextArea" HorizontalAlignment="Left" Height="291" Margin="65,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="646" VerticalScrollBarVisibility="Visible"/>
+        <TextBox Name="TextArea" IsReadOnly="True" HorizontalAlignment="Left" Height="291" Margin="65,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="646" VerticalScrollBarVisibility="Visible"/>
     </Grid>
 </UserControl>

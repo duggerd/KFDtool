@@ -20,9 +20,9 @@ namespace KFDtool.P25.Tests.Kmm
         }
 
         [TestMethod]
-        public void InvalidInventoryType()
+        public void IncorrectLength()
         {
-            byte[] data = new byte[] { 0xFA }; // 0xFA is unassigned
+            byte[] data = new byte[0];
 
             InventoryCommandListActiveSuId rxKmm = new InventoryCommandListActiveSuId();
 
@@ -30,9 +30,9 @@ namespace KFDtool.P25.Tests.Kmm
         }
 
         [TestMethod]
-        public void IncorrectLength()
+        public void IncorrectInventoryType()
         {
-            byte[] data = new byte[0];
+            byte[] data = new byte[] { 0xFA }; // 0xFA is unassigned
 
             InventoryCommandListActiveSuId rxKmm = new InventoryCommandListActiveSuId();
 

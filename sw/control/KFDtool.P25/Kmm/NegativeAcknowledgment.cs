@@ -51,7 +51,7 @@ namespace KFDtool.P25.Kmm
 
         public override void Parse(byte[] contents)
         {
-            // we have to handle both the p25 standard (4 bytes) as well as the motorola variant used in LLA and DLI (2 bytes)
+            // we have to handle both the p25 standard (4 bytes) as well as the motorola variant used in DLI/LLA (2 bytes)
             // motorola uses the standard mfid for their non-standard implementation, so we have to use the length to determine how to parse
 
             if (contents.Length == 2) // motorola variant

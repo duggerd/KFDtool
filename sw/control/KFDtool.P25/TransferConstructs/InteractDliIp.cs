@@ -218,5 +218,33 @@ namespace KFDtool.P25.TransferConstructs
                 throw;
             }
         }
+
+        public static List<RspAuthKeyInfo> ViewSuIdInfo(DliIpDevice device)
+        {
+            try
+            {
+                ManualRekeyApplication mra = GetMra(device);
+
+                return mra.ViewSuIdInfo();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static RspAuthKeyInfo ViewActiveSuIdInfo(DliIpDevice device)
+        {
+            try
+            {
+                ManualRekeyApplication mra = GetMra(device);
+
+                return mra.ViewActiveSuIdInfo();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -9,10 +9,6 @@ using KFDtool.P25.TransferConstructs;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KFDtool.P25.ManualRekey
 {
@@ -924,8 +920,91 @@ namespace KFDtool.P25.ManualRekey
             End();
         }
 
-        public void ViewSuidInfo()
+        public List<RspAuthKeyInfo> ViewSuIdInfo()
         {
+            List<RspAuthKeyInfo> result = new List<RspAuthKeyInfo>();
+
+            Begin();
+
+            bool needsAnotherRun = true;
+            int inventoryMarker = 0;
+
+            const int MAX_SUID_PER_REQUEST = 59;
+
+            while (needsAnotherRun)
+            {
+                try
+                {
+                    InventoryCommandListSuIdItems cmdKmmBody = new InventoryCommandListSuIdItems(inventoryMarker, MAX_SUID_PER_REQUEST);
+
+                    KmmBody rspKmmBody = TxRxKmm(cmdKmmBody);
+
+                    if (rspKmmBody is InventoryResponseListSuIdItems)
+                    {
+                        InventoryResponseListSuIdItems kmm = rspKmmBody as InventoryResponseListSuIdItems;
+
+                        inventoryMarker = kmm.InventoryMarker;
+
+                        if (inventoryMarker > 0)
+                        {
+                            needsAnotherRun = true;
+                        }
+                        else
+                        {
+                            needsAnotherRun = false;
+                        }
+
+                        foreach (SuIdStatus rspSuIdStatus in kmm.SuIdStatuses)
+                        {
+                            Log.Debug("* response suid *");
+                            Log.Debug("wacn: {0} (0x{0:X})", rspSuIdStatus.SuId.WacnId);
+                            Log.Debug("system id: {0} (0x{0:X})", rspSuIdStatus.SuId.SystemId);
+                            Log.Debug("unit id: {0} (0x{0:X})", rspSuIdStatus.SuId.UnitId);
+                            Log.Debug("key assigned: {0}", rspSuIdStatus.KeyAssigned);
+                            Log.Debug("is active: {0}", rspSuIdStatus.ActiveSuId);
+
+                            RspAuthKeyInfo rspAuthKeyInfo = new RspAuthKeyInfo
+                            {
+                                WacnId = rspSuIdStatus.SuId.WacnId,
+                                SystemId = rspSuIdStatus.SuId.SystemId,
+                                UnitId = rspSuIdStatus.SuId.UnitId,
+                                KeyAssigned = rspSuIdStatus.KeyAssigned,
+                                ActiveSuId = rspSuIdStatus.ActiveSuId
+                            };
+
+                            result.Add(rspAuthKeyInfo);
+                        }
+                    }
+                    else if (rspKmmBody is NegativeAcknowledgment)
+                    {
+                        NegativeAcknowledgment kmm = rspKmmBody as NegativeAcknowledgment;
+
+                        string statusDescr = OperationStatusExtensions.ToStatusString(kmm.Status);
+                        string statusReason = OperationStatusExtensions.ToReasonString(kmm.Status);
+                        throw new Exception(string.Format("received negative acknowledgment{0}status: {1} (0x{2:X2}){0}{3}", Environment.NewLine, statusDescr, (byte)kmm.Status, statusReason));
+                    }
+                    else
+                    {
+                        throw new Exception("unexpected kmm");
+                    }
+                }
+                catch
+                {
+                    End();
+
+                    throw;
+                }
+            }
+
+            End();
+
+            return result;
+        }
+
+        public RspAuthKeyInfo ViewActiveSuIdInfo()
+        {
+            RspAuthKeyInfo result = new RspAuthKeyInfo();
+
             Begin();
 
             try
@@ -943,7 +1022,18 @@ namespace KFDtool.P25.ManualRekey
                         throw new Exception(string.Format("abnormal response - status: {0} (0x{1:X2})", kmm.Status.ToString(), (byte)kmm.Status));
                     }
 
-                    Log.Fatal("WACN: 0x{0:X}, System: 0x{1:X}, Unit: 0x{2:X}, Key Assigned: {3}, Is Active: {4}", kmm.SuId.WacnId, kmm.SuId.SystemId, kmm.SuId.UnitId, kmm.KeyAssigned, kmm.ActiveSuId); // TODO remove
+                    Log.Debug("* response suid *");
+                    Log.Debug("wacn: {0} (0x{0:X})", kmm.SuId.WacnId);
+                    Log.Debug("system id: {0} (0x{0:X})", kmm.SuId.SystemId);
+                    Log.Debug("unit id: {0} (0x{0:X})", kmm.SuId.UnitId);
+                    Log.Debug("key assigned: {0}", kmm.KeyAssigned);
+                    Log.Debug("is active: {0}", kmm.ActiveSuId);
+
+                    result.WacnId = kmm.SuId.WacnId;
+                    result.SystemId = kmm.SuId.SystemId;
+                    result.UnitId = kmm.SuId.UnitId;
+                    result.KeyAssigned = kmm.KeyAssigned;
+                    result.ActiveSuId = kmm.ActiveSuId;
                 }
                 else if (rspKmmBody is NegativeAcknowledgment)
                 {
@@ -966,11 +1056,8 @@ namespace KFDtool.P25.ManualRekey
             }
 
             End();
-        }
 
-        public void ViewActiveSuidInfo()
-        {
-            throw new NotImplementedException();
+            return result;
         }
     }
 }

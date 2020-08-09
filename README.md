@@ -23,6 +23,8 @@ The KFDtool software supports KFD features through the KFDtool hardware adapter 
 
 Keys and groups of keys can be saved to an AES-256 encrypted key container file, which can then be selected and loaded into a target device in one operation.
 
+Operations encapsulated with encryption (commonly referred to as FIPS mode) are not supported at this time.
+
 Supported Manual Rekeying Features (TIA-102.AACD-A)
 
 * 2.3.1 Keyload
@@ -37,6 +39,13 @@ Supported Manual Rekeying Features (TIA-102.AACD-A)
 * 2.3.10 Load MNP
 * 2.3.11 View Keyset Info
 * 2.3.12 Activate Keyset
+
+Supported Manual Rekeying Features for Authentication (TIA-102.AACD-A)
+
+* 2.4.1 Load Authentication Key
+* 2.4.2 Delete Authentication Key
+* 2.4.3 View SUID Info
+* 2.4.4 View Active SUID Info
 
 Motorola refers to the P25 standard 3 wire interface (3WI) keyload protocol as ASTRO 25 mode or CKR mode.
 
@@ -55,6 +64,8 @@ The KFDtool software only supports MR Emulator features through the KFDtool hard
 
 This mode allows another keyloader to be connected to the KFDtool, and the keys retrieved.
 
+Operations encapsulated with encryption (commonly referred to as FIPS mode) are not supported at this time.
+
 Supported Manual Rekeying Features (TIA-102.AACD-A)
 
 * 2.3.1 Keyload
@@ -69,8 +80,6 @@ Radio Compatibility
 Radios that are compatible with Motorola KVL3000/KVL3000+/KVL4000/KVL5000 keyloaders in ASTRO 25 mode should be compatible with KFDtool.
 
 Keyloading cables made for other radios with MX (Motorola KVL) connectors can be modified by soldering an AC101 or AC102 Hirose pigtail in parallel with the MX connector according to [these](doc/MX_CONN_MOD_NOTES.md) instructions.
-
-Operations encapsulated with encryption (commonly referred to as FIPS mode) are not supported at this time for either the KFD or MR emulation modes.
 
 Hardware
 --------
