@@ -437,18 +437,18 @@ namespace KFDtool.Gui.Control
                 return;
             }
 
-            Tuple<ValidateResult, string> validateResult = FieldValidator.KeyloadValidate(keysetId, sln, IsKek, keyId, algId, key);
+            (ValidateResult result, string message) = FieldValidator.KeyloadValidate(keysetId, sln, IsKek, keyId, algId, key);
 
-            if (validateResult.Item1 == ValidateResult.Warning)
+            if (result == ValidateResult.Warning)
             {
-                if (MessageBox.Show(string.Format("{1}{0}{0}Continue?", Environment.NewLine, validateResult.Item2), "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                if (MessageBox.Show(string.Format("{1}{0}{0}Continue?", Environment.NewLine, message), "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
                     return;
                 }
             }
-            else if (validateResult.Item1 == ValidateResult.Error)
+            else if (result == ValidateResult.Error)
             {
-                MessageBox.Show(validateResult.Item2, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 

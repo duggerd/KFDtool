@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Button Content="Delete All Authentication Keys" Click="Delete_Click" HorizontalAlignment="Left" Margin="100,100,0,0" VerticalAlignment="Top" Width="200"/>
     </Grid>
 </UserControl>

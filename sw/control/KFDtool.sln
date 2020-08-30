@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KFDtool.Container", "KFDtoo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KFDtool.P25.Tests", "KFDtool.P25.Tests\KFDtool.P25.Tests.csproj", "{4258C51C-7BFD-4DFE-9D61-CEDD32FFE44E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KFDtool.ImportExport", "KFDtool.ImportExport\KFDtool.ImportExport.csproj", "{31073C0F-5C22-4204-A3F9-27813B5FC07A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{4258C51C-7BFD-4DFE-9D61-CEDD32FFE44E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4258C51C-7BFD-4DFE-9D61-CEDD32FFE44E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4258C51C-7BFD-4DFE-9D61-CEDD32FFE44E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31073C0F-5C22-4204-A3F9-27813B5FC07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31073C0F-5C22-4204-A3F9-27813B5FC07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31073C0F-5C22-4204-A3F9-27813B5FC07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31073C0F-5C22-4204-A3F9-27813B5FC07A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

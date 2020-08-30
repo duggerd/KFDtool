@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KFDtool.P25.TransferConstructs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,21 @@ namespace KFDtool.Gui.Control
         public P25DeleteAllAuthenticationKeys()
         {
             InitializeComponent();
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Interact.DeleteAuthenticationKey(Settings.SelectedDevice, false, true, 0, 0, 0);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            MessageBox.Show("All Keys Erased Successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

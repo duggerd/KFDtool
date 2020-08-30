@@ -28,6 +28,7 @@
                 <MenuItem Name="DeviceMenu" Header="_Device" />
                 <MenuItem Name="P25KfdMenu" Header="_P25 KFD">
                     <MenuItem Name="NavigateP25MultipleKeyload" Header="_Multiple Keyload" IsCheckable="True" Click="Navigate_MenuItem_Click" />
+                    <MenuItem Name="NavigateP25AutoKeyload" Header="_Auto Keyload" IsCheckable="True" Click="Navigate_MenuItem_Click" />
                     <MenuItem Name="NavigateP25Keyload" Header="_Keyload" IsCheckable="True" Click="Navigate_MenuItem_Click" />
                     <MenuItem Name="NavigateP25KeyErase" Header="_Key Erase" IsCheckable="True" Click="Navigate_MenuItem_Click" />
                     <MenuItem Name="NavigateP25EraseAllKeys" Header="_Erase All Keys" IsCheckable="True" Click="Navigate_MenuItem_Click" />
@@ -35,6 +36,7 @@
                     <MenuItem Name="NavigateP25ViewKeysetInfo" Header="_View Keyset Info" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                     <MenuItem Name="NavigateP25ViewRsiConfig" Header="_RSI Configuration" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                     <MenuItem Name="NavigateP25KmfConfig" Header="_KMF Configuration" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
+                    <MenuItem Name="NavigateP25AutoLoadAuthenticationKey" Header="_Auto Load Authentication Key" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                     <MenuItem Name="NavigateP25LoadAuthenticationKey" Header="_Load Authentication Key" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                     <MenuItem Name="NavigateP25DeleteAuthenticationKey" Header="_Delete Authentication Key" IsCheckable="True" Click="Navigate_MenuItem_Click"/>
                     <MenuItem Name="NavigateP25DeleteAllAuthenticationKeys" Header="_Delete All Authentication Keys" IsCheckable="True" Click="Navigate_MenuItem_Click"/>

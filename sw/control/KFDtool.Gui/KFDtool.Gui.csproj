@@ -71,6 +71,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Control\P25AutoKeyload.xaml.cs">
+      <DependentUpon>P25AutoKeyload.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\P25AutoLoadAuthenticationKey.xaml.cs">
+      <DependentUpon>P25AutoLoadAuthenticationKey.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\P25DeleteAllAuthenticationKeys.xaml.cs">
       <DependentUpon>P25DeleteAllAuthenticationKeys.xaml</DependentUpon>
     </Compile>
@@ -142,6 +148,14 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Converters.cs" />
+    <Page Include="Control\P25AutoKeyload.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\P25AutoLoadAuthenticationKey.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\P25DeleteAllAuthenticationKeys.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -296,6 +310,10 @@
     <ProjectReference Include="..\KFDtool.Container\KFDtool.Container.csproj">
       <Project>{4e99ec83-6ee7-49e0-a9af-6674a53f578c}</Project>
       <Name>KFDtool.Container</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KFDtool.ImportExport\KFDtool.ImportExport.csproj">
+      <Project>{31073c0f-5c22-4204-a3f9-27813b5fc07a}</Project>
+      <Name>KFDtool.ImportExport</Name>
     </ProjectReference>
     <ProjectReference Include="..\KFDtool.P25\KFDtool.P25.csproj">
       <Project>{824aca5b-01db-42b7-892f-e4cec6ff3887}</Project>

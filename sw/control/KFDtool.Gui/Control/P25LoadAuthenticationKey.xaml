@@ -7,6 +7,30 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Button Content="Load" Click="Load_Click" HorizontalAlignment="Left" Margin="192,177,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label Content="Dec" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="109,16,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Hex" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="247,16,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="WACN ID" HorizontalAlignment="Left" Margin="34,44,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="WacnIdDec" TextChanged="WacnIdDec_TextChanged" HorizontalAlignment="Left" Height="23" Margin="109,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="WacnIdHex" TextChanged="WacnIdHex_TextChanged" HorizontalAlignment="Left" Height="23" Margin="247,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <CheckBox Name="ActiveSuId" Content="Active SUID" Checked="ActiveSuId_Checked" Unchecked="ActiveSuId_Unchecked" HorizontalAlignment="Left" Margin="383,51,0,0" VerticalAlignment="Top"/>
+        <Label Content="System ID" HorizontalAlignment="Left" Margin="34,78,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="SystemIdDec" TextChanged="SystemIdDec_TextChanged" HorizontalAlignment="Left" Height="23" Margin="109,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="SystemIdHex" TextChanged="SystemIdHex_TextChanged" HorizontalAlignment="Left" Height="23" Margin="247,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Unit ID" HorizontalAlignment="Left" Margin="34,112,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="UnitIdDec" TextChanged="UnitIdDec_TextChanged" HorizontalAlignment="Left" Height="23" Margin="109,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="UnitIdHex" TextChanged="UnitIdHex_TextChanged" HorizontalAlignment="Left" Height="23" Margin="247,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Algorithm" HorizontalAlignment="Left" Margin="34,146,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="AlgIdDec" TextChanged="AlgIdDec_TextChanged" HorizontalAlignment="Left" Height="23" Margin="109,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="AlgIdHex" TextChanged="AlgIdHex_TextChanged" HorizontalAlignment="Left" Height="23" Margin="247,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ComboBox Name="AlgSelect" SelectionChanged="AlgSelect_SelectionChanged" HorizontalAlignment="Left" Margin="383,150,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Name="AES128" Content="AES-128" />
+            <ComboBoxItem Name="OTHER" Content="Other" />
+        </ComboBox>
+        <Label Content="Key (hex)" HorizontalAlignment="Left" Margin="34,180,0,0" VerticalAlignment="Top"/>
+        <PasswordBox Name="KeyHidden" HorizontalAlignment="Left" Height="23" Margin="109,183,0,0" VerticalAlignment="Top" Width="500"/>
+        <TextBox Name="KeyVisible" HorizontalAlignment="Left" Height="23" Margin="109,183,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="500"/>
+        <Button Content="Generate" Click="Generate_Clicked" HorizontalAlignment="Left" Margin="626,186,0,0" VerticalAlignment="Top" Width="75"/>
+        <CheckBox Name="HideKey" Content="Hide" Checked="HideKey_Checked" Unchecked="HideKey_Unchecked" HorizontalAlignment="Left" Margin="564,219,0,0" VerticalAlignment="Top"/>
+        <Button Content="Load" Click="Load_Clicked" HorizontalAlignment="Left" Margin="109,219,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </UserControl>

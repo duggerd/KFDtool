@@ -68,6 +68,9 @@
       <Component Id="KFDtool.Container.dll" Guid="{59F1F7EE-B5FE-4CF2-8257-0B3DC1BE10CD}">
         <File Id="KFDtool.Container.dll" Source="..\..\control\KFDtool.Gui\bin\Release\KFDtool.Container.dll" KeyPath="yes" Checksum="yes" />
       </Component>
+      <Component Id="KFDtool.ImportExport.dll" Guid="{C6C85F4F-D918-4B53-8736-3603CC6F2D49}">
+        <File Id="KFDtool.ImportExport.dll" Source="..\..\control\KFDtool.Gui\bin\Release\KFDtool.ImportExport.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
       <Component Id="KFDtool.P25.dll" Guid="{02C09380-097D-4D2A-A492-53E379CFE385}">
         <File Id="KFDtool.P25.dll" Source="..\..\control\KFDtool.Gui\bin\Release\KFDtool.P25.dll" KeyPath="yes" Checksum="yes" />
       </Component>
@@ -123,6 +126,7 @@
       <ComponentRef Id="KFDtool.Adapter.dll" />
       <ComponentRef Id="KFDtool.BSL430.dll" />
       <ComponentRef Id="KFDtool.Container.dll" />
+      <ComponentRef Id="KFDtool.ImportExport.dll" />
       <ComponentRef Id="KFDtool.P25.dll" />
       <ComponentRef Id="KFDtool.Shared.dll" />
       <ComponentRef Id="KFDtool_Manual.pdf" />

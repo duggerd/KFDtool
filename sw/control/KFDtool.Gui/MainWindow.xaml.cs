@@ -114,6 +114,13 @@ namespace KFDtool.Gui
                 Settings.ScreenCurrent = item;
                 UpdateTitle("P25 KFD - Multiple Keyload");
             }
+            else if (item == "NavigateP25AutoKeyload")
+            {
+                control = new Control.P25AutoKeyload();
+                NavigateP25AutoKeyload.IsChecked = true;
+                Settings.ScreenCurrent = item;
+                UpdateTitle("P25 KFD - Auto Keyload");
+            }
             else if (item == "NavigateP25Keyload")
             {
                 control = new Control.P25Keyload();
@@ -162,6 +169,13 @@ namespace KFDtool.Gui
                 NavigateP25KmfConfig.IsChecked = true;
                 Settings.ScreenCurrent = item;
                 UpdateTitle("P25 KFD - KMF Configuration");
+            }
+            else if (item == "NavigateP25AutoLoadAuthenticationKey")
+            {
+                control = new Control.P25AutoLoadAuthenticationKey();
+                NavigateP25AutoLoadAuthenticationKey.IsChecked = true;
+                Settings.ScreenCurrent = item;
+                UpdateTitle("P25 KFD - Auto Load Authentication Key");
             }
             else if (item == "NavigateP25LoadAuthenticationKey")
             {
